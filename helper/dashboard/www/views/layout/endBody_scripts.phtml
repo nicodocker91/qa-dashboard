@@ -1,0 +1,29 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<!-- jQuery first, then Tether, then Bootstrap JS. -->
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<?php if ($view->get('phpMetricsData', false)): ?>
+<!-- Scripts for PhpMetrics. -->
+<script src="https://d3js.org/d3.v3.js"></script>
+<script src="https://d3js.org/d3.hexbin.v0.js"></script>
+<script src="phpmetrics/js/classes.js"></script>
+<script src="phpmetrics/js/graph-maintainability.js"></script>
+<script>document.onreadystatechange=function(){if(document.readyState==='complete')chartMaintainability()}</script>
+<?php endif; ?>
+
+<!-- Scripts for dashboard. -->
+<script>
+    $("a[data-toggle='tab']","ul[role=tablist]").click(function(e) {
+        e.preventDefault($($(this).attr('href')).addClass(a='active').siblings('.tab-pane').removeClass('active'));
+        $("li",$(this).parents("ul[role=tablist]")).removeClass(a)
+        $(this).parent('li').addClass(a)
+    });
+    $("a[data-toggle='toggle']","div[data-controls='toggleDisplay']").click(function(e) {
+        e.preventDefault($("div[data-default-displayed='false']","div#"+$(this).attr('aria-controls')).toggleClass('hide'));
+        $("p",$(this).data("parent")).toggleClass("hide").toggleClass("show");
+    });
+</script>

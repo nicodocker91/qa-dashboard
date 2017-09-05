@@ -1,0 +1,36 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<div class="row">
+    <?= $view->import('blocks/tools/phpcs/summary.phtml')?>
+</div>
+<?php if (!empty($view->get('phpcsData_details', []))): ?>
+<div class="row">
+    <div class="table-responsive">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h4 class="panel-title">List of all errors and warnings.</h4></div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tbody>
+                    <?php foreach ($view->get('phpcsData_details', []) as $fileName => $phpCsInfo): ?>
+                        <tr>
+                            <th><?= $fileName ?>: <span class="text-danger"><?= $phpCsInfo['errors'] ?> errors</span> and <span class="text-warning"><?= $phpCsInfo['warnings'] ?> warnings</span>.</th>
+                            <th>Line</th>
+                            <th>Column</th>
+                        </tr>
+                        <?php foreach ($phpCsInfo['details'] as $phpCsDetail): ?>
+                        <tr class="text-<?= $phpCsDetail['type']?> <?= $phpCsDetail['type']?>">
+                            <td><?= $phpCsDetail['message'] ?></td>
+                            <td><?= $phpCsDetail['line'] ?></td>
+                            <td><?= $phpCsDetail['column'] ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

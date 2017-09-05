@@ -1,0 +1,11 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<a href="#phpcpd" data-toggle="tab">
+    <i class="fa fa-copy"></i> PHP Copy/Paste Detector
+    <div class="pull-right">
+        <?php if (!$view->get('phpcpdData_isSuccess')): ?><span class="label label-info"><?= $view->get('phpcpd_duplicated_#') ?></span><?php endif;?>
+        <?php if ($view->get('phpcpdData_isSuccess')): ?><span class="label label-success"><?= $view->get('phpcpd_duplicated_#') ?></span><?php endif;?>
+    </div>
+</a>

@@ -1,0 +1,11 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<?php if ('' !== $view->get('pdepend_overviewPyramid_svg', '')): ?>
+<div class="panel panel-primary pdepdend-graph-container" id="dashboard_home_panel_pdepend_pyramid">
+    <div class="panel-heading"><h4 class="panel-title">PDepend's Pyramid</h4></div>
+    <div class="panel-body"><?= $view->get('pdepend_overviewPyramid_svg', '') ?></div>
+</div>
+<?php endif; ?>
+

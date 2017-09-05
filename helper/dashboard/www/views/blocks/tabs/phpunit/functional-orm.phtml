@@ -1,0 +1,9 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<div class="tab-pane" id="phpunit_functional_orm">
+    <div class="container-fluid">
+    <?= $view->import('blocks/tools/phpunit/panel/functional-orm-report.phtml')?>
+    </div>
+</div>

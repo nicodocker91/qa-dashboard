@@ -1,0 +1,29 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<?php if (false !== $view->get('phpunitData_functional_orm_exists', false)): ?>
+<div class="row">
+    <?php if (!$view->get('phpunitData_functional_orm_summary_is_success', false)): ?>
+    <div class="col-sm-4 text-center">
+        <span class="label label-danger">&nbsp;</span>&nbsp;<?= $view->get('phpunitData_functional_orm_summary_errors_#', 'N/A') ?> errors.
+    </div>
+    <div class="col-sm-4 text-center">
+        <span class="label label-warning">&nbsp;</span>&nbsp;<?= $view->get('phpunitData_functional_orm_summary_failures_#', 'N/A') ?> failures.
+    </div>
+    <div class="col-sm-4 text-center">
+        <span class="label label-info">&nbsp;</span>&nbsp;<?= $view->get('phpunitData_functional_orm_summary_skipped_#', 'N/A') ?> skipped.
+    </div>
+    <?php else: ?>
+    <div class="col-sm-12 text-center">
+        <span class="label label-success">&nbsp;</span>&nbsp;No errors.
+    </div>
+    <?php endif; ?>
+</div>
+<br>
+<div class="row">
+    <div class="col-sm-12 text-center">
+        <strong><?= $view->get('phpunitData_functional_orm_summary_assertions_#', 'N/A') ?> assertions in <?= $view->get('phpunitData_functional_orm_summary_tests_#', 'N/A') ?> tests.</strong>
+    </div>
+</div>
+<?php endif;?>

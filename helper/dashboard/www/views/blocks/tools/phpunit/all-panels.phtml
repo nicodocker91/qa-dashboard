@@ -1,0 +1,15 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<?php if ($view->get('_phpunit', false)): ?>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="panel-title">PHP Unit</h4>
+    </div>
+    <div class="panel-body">
+        <?= $view->import('blocks/tools/phpunit/panel/all-summary.phtml'); ?>
+    </div>
+</div>
+<?php endif; ?>
+

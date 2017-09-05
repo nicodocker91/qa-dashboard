@@ -1,0 +1,50 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+$details = $view->get('phpunitData_functional_couchdb_details');
+?>
+<div class="row">
+    <?= $view->import('blocks/tools/phpcpd/summary.phtml'); ?>
+</div>
+<?php if (!$view->get('phpcpd_isSuccess')): ?>
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">PHP Copy/Paste Detector - Details</h4>
+        </div>
+        <div class="panel-body">
+            <div class="panel-group" id="accordion_phpcpd" role="tablist" aria-multiselectable="true">
+                <?php foreach ($view->get('phpcpd_details', []) as $phpCpdDetail): ?>
+                <?php $htmlPhpCpdDetailId = sha1(uniqid('phpcpdAccordion_', true)); ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="phpcpd_detail_<?= $htmlPhpCpdDetailId ?>_heading">
+                            <h4 class="panel-title">
+                                <a role="button"
+                                   data-toggle="collapse"
+                                   data-parent="#accordion_phpcpd"
+                                   data-target="#phpcpd_detail_<?= $htmlPhpCpdDetailId ?>_body"
+                                   href="#phpcpd_detail_<?= $htmlPhpCpdDetailId ?>_heading"
+                                   aria-expanded="false"
+                                   aria-controls="phpcpd_detail_<?= $htmlPhpCpdDetailId ?>_body">
+                                    <small><?= $phpCpdDetail['fileA'] . ':' . $phpCpdDetail['lineA'] ?><br><?= $phpCpdDetail['fileB'] . ':' . $phpCpdDetail['lineB'] ?></small>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="phpcpd_detail_<?= $htmlPhpCpdDetailId ?>_body"
+                             class="panel-collapse collapse"
+                             role="tabpanel"
+                             aria-labelledby="phpcpd_detail_<?= $htmlPhpCpdDetailId ?>_heading">
+                            <div class="panel-body">
+                                <div class="text-center">
+                                    <strong><?= $phpCpdDetail['nbTokens'] ?> identical tokens on <?= $phpCpdDetail['nbLines'] ?> lines.</strong>
+                                </div>
+                                <div class="phpcpd_snippet"><?= $phpCpdDetail['snippetColor'] ?></div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif;?>

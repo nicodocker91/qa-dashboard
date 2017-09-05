@@ -1,0 +1,18 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<div class="panel panel-primary">
+    <div class="panel-heading"><h4 class="panel-title">PHP Copy/Paste Detector</h4></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+            <?php if (!$view->get('phpcpd_isSuccess')): ?>
+                <strong><?= $view->get('phpcpd_duplicated_#') ?> duplications</strong>: <?= $view->get('phpcpd_duplicated_%') ?> of the analysed project.
+            <?php else:?>
+                <strong>No duplication found.</strong>
+            <?php endif;?>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+
+$average = $view->get('pdependData_current_average');
+?>
+<div class="row"><div class="col-sm-12"><p class="lead text-center">Average values</p></div></div>
+<div class="row">
+    <div class="col-sm-3"><p class="bg-info text-center"><span class="lead"><?= round($average['ccn2'], 3);?></span><br>Cyclomatic Complexity</p></div>
+    <div class="col-sm-3"><p class="bg-info text-center"><span class="lead"><?= round($average['npath'], 3);?></span><br>NPath</p></div>
+    <div class="col-sm-3"><p class="bg-info text-center"><span class="lead"><?= round($average['mi'], 3);?></span><br>Maintainability Index</p></div>
+    <div class="col-sm-3"><p class="bg-info text-center"><span class="lead"><?= round($average['hb'], 3);?></span><br>Halstead Bugs</p></div>
+</div>

@@ -1,0 +1,32 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+
+$packageName = $view->get('pdependData_current_package_name');
+$packageDetails = $view->get('pdependData_current_package_details');
+$packageId = sha1($packageName);
+?>
+<ul class="nav nav-pills nav-stacked" role="tablist">
+    <li role="presentation" class="active">
+        <a href="#pdepend_details_package_<?= $packageId ?>" data-toggle="tab"><span class="badge" title="Package">P</span> Package stats</a>
+    </li>
+    <?php foreach ($packageDetails['classes'] as $className => $classDetails): ?>
+    <?php $classId = sha1($packageName . $className); ?>
+    <?php if ($classDetails['values']['nom'] > 0): ?>
+    <li class="nav-header">
+        <a class="dropdown-toggle" data-toggle="collapse" data-target="#pdepend_<?= $classId ?>_userMenu" role="button" aria-expanded="false">
+            <span class="badge" title="<?= ucfirst($classDetails['type']); ?>"><?= strtoupper($classDetails['type']{0}); ?></span> <?= $className ?> <span class="caret"></span>
+            <?php if ($classDetails['violations'] > 0): ?>
+                <span class="pull-right label label-danger"><?= $classDetails['violations'] ?></span>
+            <?php endif; ?>
+        </a>
+        <ul class="nav nav-stacked collapse" id="pdepend_<?= $classId ?>_userMenu">
+            <li><a href="#pdepend_details_class_<?= $classId ?>_classStats" data-toggle="tab"><span class="badge" title="<?= ucfirst($classDetails['type']); ?>"><?= strtoupper($classDetails['type']{0}); ?></span> Class stats</a></li>
+            <li><a href="#pdepend_details_class_<?= $classId ?>_methodStats" data-toggle="tab"><span class="badge" title="Method">M</span> Methods stats</a></li>
+        </ul>
+    </li>
+    <?php else: ?>
+    <li><a href="#pdepend_details_class_<?= $classId ?>_classStats" data-toggle="tab"><span class="badge" title="<?= ucfirst($classDetails['type']); ?>"><?= strtoupper($classDetails['type']{0}); ?></span> <?= $className ?></a></li>
+    <?php endif; ?>
+    <?php endforeach; ?>
+</ul>

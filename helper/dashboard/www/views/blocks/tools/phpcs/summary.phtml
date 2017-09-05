@@ -1,0 +1,32 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<div class="panel panel-primary">
+    <div class="panel-heading"><h4 class="panel-title">PHP Code Sniffer</h4></div>
+    <div class="panel-body">
+        <div class="row">
+            <?php if ($view->get('phpcsData_hasErrors')): ?>
+            <div class="col-sm-6 text-center">
+                <span class="label label-danger">&nbsp;</span>&nbsp;<?= $view->get('phpcsData_total_errors_#') ?> errors.
+            </div>
+            <?php endif;?>
+            <?php if ($view->get('phpcsData_hasWarnings')): ?>
+            <div class="col-sm-6 text-center">
+                <span class="label label-warning">&nbsp;</span>&nbsp;<?= $view->get('phpcsData_total_warnings_#') ?> warnings.
+            </div>
+            <?php endif;?>
+            <?php if ($view->get('phpcsData_isSuccess')): ?>
+            <div class="col-sm-12 text-center">
+                <span class="label label-success">&nbsp;</span>&nbsp;No error.
+            </div>
+            <?php endif;?>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <strong><?= $view->get('phpcsData_total_analysed_#', 'No') ?> files analysed.</strong>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<?php
+declare(strict_types = 1);
+use Dashboard\Domain\Tool\DefaultTool;
+
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<ul class="nav nav-pills nav-stacked" role="tablist">
+    <li role="presentation" class="active">
+        <a href="#home" data-toggle="tab"><i class="glyphicon glyphicon-home"></i> Home</a>
+    </li>
+    <li role="presentation"><?= $view->get('_phpcs', new DefaultTool())->getHTMLMenu(); ?></li>
+    <li role="presentation"><?= $view->get('_phpcpd', new DefaultTool())->getHTMLMenu(); ?></li>
+    <li role="presentation"><?= $view->get('_pdepend', new DefaultTool())->getHTMLMenu(); ?></li>
+    <li role="presentation"><?= $view->get('_phpunit', new DefaultTool())->getHTMLMenu(); ?></li>
+    <li role="presentation"><?= $view->get('_phpmetrics', new DefaultTool())->getHTMLMenu(); ?></li>
+</ul>
+<hr>
+<p>
+    <strong class="text-muted">Color legend:</strong><br>
+    <span class="label label-danger">&nbsp;</span>&nbsp;<em>Errors</em><br>
+    <span class="label label-warning">&nbsp;</span>&nbsp;<em>Warnings or failures</em><br>
+    <span class="label label-info">&nbsp;</span>&nbsp;<em>Information or low failures</em><br>
+    <span class="label label-success">&nbsp;</span>&nbsp;<em>No errors</em>
+</p>

@@ -1,0 +1,23 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 hidden-sm hidden-xs" id="dashboard_global_menu">
+            <nav class="affix customAffix"><?= $view->import('blocks/menu.phtml')?></nav>
+        </div>
+        <div class="col-md-10 col-xs-12" id="dashboard_global_view">
+            <div class="tab-content">
+                <?= $view->import('blocks/tabs/home.phtml')?>
+                <?= $view->import('blocks/tabs/phpcs.phtml')?>
+                <?= $view->import('blocks/tabs/phpcpd.phtml')?>
+                <?= $view->import('blocks/tabs/pdepend.phtml')?>
+                <?= $view->import('blocks/tabs/phpunit/functional-couchdb.phtml')?>
+                <?= $view->import('blocks/tabs/phpunit/functional-orm.phtml')?>
+                <?= $view->import('blocks/tabs/phpunit/functional-odm.phtml')?>
+                <?= $view->import('blocks/tabs/phpunit/unit.phtml')?>
+            </div>
+        </div>
+    </div>
+</div>

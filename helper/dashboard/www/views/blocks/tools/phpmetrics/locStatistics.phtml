@@ -1,0 +1,22 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<div class="panel panel-primary hidden-sm hidden-xs">
+    <div class="panel-heading"><h4 class="panel-title">Commented lines of code / Logical lines of code</h4></div>
+    <div class="panel-body">
+        <div class="progress">
+            <div class="progress-bar progress-bar-info progress-bar-striped" style="width: <?= $view->get('phpMetricsData_cloc_%', 0)?>%">
+                <span><?= $view->get('phpMetricsData_cloc_#', 0)?></span>
+            </div>
+            <div class="progress-bar progress-bar-success progress-bar-striped" style="width: <?= $view->get('phpMetricsData_lloc_%', 0)?>%">
+                <span><?= $view->get('phpMetricsData_lloc_#', 0)?></span>
+            </div>
+        </div>
+        <p><b>Total: <?= $view->get('phpMetricsData_loc_#', 0); ?>.</b></p>
+        <p>
+            <span class="label label-info progress-bar-striped">&nbsp;</span>&nbsp;<em>Number of commented lines of code.</em><br>
+            <span class="label label-success progress-bar-striped">&nbsp;</span>&nbsp;<em>Number of logical lines of code.</em>
+        </p>
+    </div>
+</div>

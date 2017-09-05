@@ -1,0 +1,14 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head><?= $view->import('layout/header.phtml')?></head>
+<body>
+<?= $view->import('layout/topNav.phtml')?>
+<?= $view->import('layout/main.phtml')?>
+<?= $view->import('layout/footer.phtml')?>
+<?= $view->import('layout/endBody_scripts.phtml')?>
+</body>
+</html>

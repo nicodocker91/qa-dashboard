@@ -1,0 +1,10 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<?php if (!empty($view->get('phpMetricsData', []))): ?>
+<div class="panel panel-primary">
+    <div class="panel-heading"><h4 class="panel-title">Maintainability Index / Cyclomatic Complexity</h4></div>
+    <div class="panel-body"><div id="svg-maintainability"></div></div>
+</div>
+<?php endif; ?>

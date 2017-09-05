@@ -1,0 +1,20 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<div class="panel panel-primary">
+    <div class="panel-heading"><h4 class="panel-title">Number of methods, classes and interfaces</h4></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <p class="text-center"><span class="lead"><?= $view->get('phpMetricsData_nbMethods_#', 'N/A');?></span><br>Methods</p>
+            </div>
+            <div class="col-sm-4">
+                <p class="text-center"><span class="lead"><?= $view->get('phpMetricsData_nbClasses_#', 'N/A');?></span><br>Classes</p>
+            </div>
+            <div class="col-sm-4">
+                <p class="text-center"><span class="lead"><?= $view->get('phpMetricsData_nbInterfaces_#', 'N/A');?></span><br>Interfaces</p>
+            </div>
+        </div>
+    </div>
+</div>

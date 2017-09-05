@@ -1,0 +1,112 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+$details = $view->get('phpunitData_functional_orm_details');
+?>
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">PHP Unit - ORM - Statistics</h4>
+        </div>
+        <div class="panel-body">
+            <div class="progress">
+                <div class="progress-bar progress-bar-danger" style="width: <?= $view->get('phpunitData_functional_orm_summary_errors_%', 0)?>%">
+                    <span><?= $view->get('phpunitData_functional_orm_summary_errors_#', 0)?> (<?= $view->get('phpunitData_functional_orm_summary_errors_%', 0)?> %)</span>
+                </div>
+                <div class="progress-bar progress-bar-warning" style="width: <?= $view->get('phpunitData_functional_orm_summary_failures_%', 0)?>%">
+                    <span><?= $view->get('phpunitData_functional_orm_summary_failures_#', 0)?> (<?= $view->get('phpunitData_functional_orm_summary_failures_%', 0)?> %)</span>
+                </div>
+                <div class="progress-bar progress-bar-info" style="width: <?= $view->get('phpunitData_functional_orm_summary_skipped_%', 0)?>%">
+                    <span><?= $view->get('phpunitData_functional_orm_summary_skipped_#', 0)?> (<?= $view->get('phpunitData_functional_orm_summary_skipped_%', 0)?> %)</span>
+                </div>
+                <div class="progress-bar progress-bar-success" style="width: <?= $view->get('phpunitData_functional_orm_summary_success_%', 0)?>%">
+                    <span><?= $view->get('phpunitData_functional_orm_summary_success_#', 0)?> (<?= $view->get('phpunitData_functional_orm_summary_success_%', 0)?> %)</span>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-sm-3"><span class="label label-danger">&nbsp;</span>&nbsp;<em>Errors.</em></div>
+                <div class="col-sm-3"><span class="label label-warning">&nbsp;</span>&nbsp;<em>Failures.</em></div>
+                <div class="col-sm-3"><span class="label label-info">&nbsp;</span>&nbsp;<em>Skipped.</em></div>
+                <div class="col-sm-3"><span class="label label-success">&nbsp;</span>&nbsp;<em>Passed.</em></div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php if (false !== $view->get('phpunitData_functional_orm_exists', false)): ?>
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">PHP Unit - ORM</h4>
+            </div>
+            <div class="panel-body">
+                <div id="phpunit_functional_orm_toggleDisplay" data-controls="toggleDisplay" class="alert alert-info" role="alert">
+                    <p class="show text-center">Only invalid tests are displayed.
+                        <strong><a role="button"
+                                   data-toggle="toggle"
+                                   data-parent="#phpunit_functional_orm_toggleDisplay"
+                                   href="#phpunit_functional_orm_toggleDisplay_all"
+                                   aria-controls="accordion_phpunit_functional_orm">Display all</a></strong>.
+                    </p>
+                    <p class="hide text-center">All tests are displayed.
+                        <strong><a role="button"
+                                   data-toggle="toggle"
+                                   data-parent="#phpunit_functional_orm_toggleDisplay"
+                                   href="#phpunit_functional_orm_toggleDisplay_only"
+                                   aria-controls="accordion_phpunit_functional_orm">Display only invalid</a></strong>.
+                    </p>
+                </div>
+                <div class="panel-group" id="accordion_phpunit_functional_orm" role="tablist" aria-multiselectable="true">
+                    <?php foreach ($details as $testSuiteName => $testSuiteDetails): ?>
+                        <?php $htmlTestSuiteId = sha1($testSuiteName); ?>
+                        <div class="panel panel-default <?php if ($testSuiteDetails['errors'] + $testSuiteDetails['failures'] + $testSuiteDetails['skipped'] === 0): ?> hide<?php endif; ?>"
+                            <?php if ($testSuiteDetails['errors'] + $testSuiteDetails['failures'] + $testSuiteDetails['skipped'] === 0): ?> data-default-displayed="false"<?php endif; ?>
+                        >
+                            <div class="panel-heading" role="tab" id="phpunit_functional_orm_testSuite_<?= $htmlTestSuiteId ?>_heading">
+                                <h4 class="panel-title">
+                                    <a role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#accordion_phpunit_functional_orm"
+                                       data-target="#phpunit_functional_orm_testSuite_<?= $htmlTestSuiteId ?>_body"
+                                       href="#phpunit_functional_orm_testSuite_<?= $htmlTestSuiteId ?>_heading"
+                                       aria-expanded="false"
+                                       aria-controls="phpunit_functional_orm_testSuite_<?= $htmlTestSuiteId ?>_body">
+                                        <?= $testSuiteName ?>
+                                        <div class="pull-right">
+                                            <?php if ($testSuiteDetails['errors'] !== 0): ?>&nbsp;<span class="label label-danger"><?= $testSuiteDetails['errors'] ?></span><?php endif;?>
+                                            <?php if ($testSuiteDetails['failures'] !== 0): ?>&nbsp;<span class="label label-warning"><?= $testSuiteDetails['failures'] ?></span><?php endif;?>
+                                            <?php if ($testSuiteDetails['skipped'] !== 0): ?>&nbsp;<span class="label label-info"><?= $testSuiteDetails['skipped'] ?></span><?php endif;?>
+                                        </div>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="phpunit_functional_orm_testSuite_<?= $htmlTestSuiteId ?>_body"
+                                 class="panel-collapse collapse"
+                                 role="tabpanel"
+                                 aria-labelledby="phpunit_functional_orm_testSuite_<?= $htmlTestSuiteId ?>_heading">
+                                <div class="panel-body">
+                                    <div class="text-center">
+                                        <strong><?= $testSuiteDetails['assertions'] ?> assertions in <?= $testSuiteDetails['tests'] ?> tests.</strong>
+                                    </div>
+                                    <hr>
+                                    <?php foreach ($testSuiteDetails['details'] as $testCaseName => $testCaseDetails): ?>
+                                        <?php
+                                        $htmlCalloutClass = '';
+                                        $htmlCalloutClass = ($testCaseDetails['type'] === 'success') ? 'bs-callout-success' : $htmlCalloutClass;
+                                        $htmlCalloutClass = ($testCaseDetails['type'] === 'error') ? 'bs-callout-danger' : $htmlCalloutClass;
+                                        $htmlCalloutClass = ($testCaseDetails['type'] === 'failure') ? 'bs-callout-warning' : $htmlCalloutClass;
+                                        $htmlCalloutClass = ($testCaseDetails['type'] === 'skipped') ? 'bs-callout-info' : $htmlCalloutClass;
+                                        ?>
+                                        <div class="bs-callout <?= $htmlCalloutClass ?>">
+                                            <h4><?= $testCaseName ?><br><small><?= $testCaseDetails['file'] . ':' . $testCaseDetails['line'] ?></small></h4>
+                                            <?php if (!empty($testCaseDetails['message'])): ?><pre style="margin-bottom:0"><?= $testCaseDetails['message'] ?></pre><?php endif; ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif;?>

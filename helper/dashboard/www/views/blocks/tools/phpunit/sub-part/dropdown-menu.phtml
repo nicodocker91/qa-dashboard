@@ -1,0 +1,41 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+$summaryIdentifier = $view->get('phpunit_summary_identifier', random_int(0, PHP_INT_MAX));
+$summaryCurrentView = $view->get('phpunit_summary_current_view', 'All');
+?>
+<div class="dropdown">
+    <span class="fa fa-bars"
+          style="cursor:pointer"
+          id="phpunit_summary_list_<?= $summaryIdentifier ?>"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="true"></span>
+    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="phpunit_summary_list_<?= $summaryIdentifier ?>">
+        <?php if ($view->get('_phpunit', false)): ?>
+            <li<?= $summaryCurrentView === 'All' ? ' class="disabled"' : '' ?>>
+                <a href="#phpunit_all_summary" data-toggle="tab">All</a>
+            </li>
+        <?php endif; ?>
+        <?php if ($view->get('phpunitData_unit_exists', false)): ?>
+            <li<?= $summaryCurrentView === 'Unit' ? ' class="disabled"' : '' ?>>
+                <a href="#phpunit_unit_summary" data-toggle="tab">Unit tests</a>
+            </li>
+        <?php endif; ?>
+        <?php if ($view->get('phpunitData_functional_couchdb_exists', false)): ?>
+            <li<?= $summaryCurrentView === 'Functional_CouchDB' ? ' class="disabled"' : '' ?>>
+                <a href="#phpunit_functional_couchdb_summary" data-toggle="tab">Functional tests (CouchDB)</a>
+            </li>
+        <?php endif; ?>
+        <?php if ($view->get('phpunitData_functional_odm_exists', false)): ?>
+            <li<?= $summaryCurrentView === 'Functional_ODM' ? ' class="disabled"' : '' ?>>
+                <a href="#phpunit_functional_odm_summary" data-toggle="tab">Functional tests (ODM)</a>
+            </li>
+        <?php endif; ?>
+        <?php if ($view->get('phpunitData_functional_orm_exists', false)): ?>
+            <li<?= $summaryCurrentView === 'Functional_ORM' ? ' class="disabled"' : '' ?>>
+                <a href="#phpunit_functional_orm_summary" data-toggle="tab">Functional tests (ORM)</a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>

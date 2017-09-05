@@ -1,0 +1,9 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<div class="tab-pane" id="phpcpd">
+    <div class="container-fluid">
+    <?= $view->import('blocks/tools/phpcpd/report.phtml')?>
+    </div>
+</div>

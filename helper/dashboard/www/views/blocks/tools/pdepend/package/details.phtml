@@ -1,0 +1,107 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+
+$packageName = $view->get('pdependData_current_package_name');
+$packageDetails = $view->get('pdependData_current_package_details');
+$packageId = sha1($packageName);
+?>
+<div class="tab-pane active" id="pdepend_details_package_<?= $packageId ?>">
+    <?= $view->set('pdependData_current_nb_violations', $packageDetails['violations'])->import('blocks/tools/pdepend/violations.phtml') ?>
+    <div class="row"><div class="col-sm-12"><p class="lead text-center">Elements</p></div></div>
+    <div class="row">
+        <div class="col-sm-6"><p class="bg-success text-center"><span class="lead"><?= $packageDetails['values']['noc'];?></span><br>Classes</p></div>
+        <div class="col-sm-6"><p class="bg-success text-center"><span class="lead"><?= $packageDetails['values']['noi'];?></span><br>Interfaces</p></div>
+    </div>
+    <hr>
+    <?php $view->set('pdependData_current_average', $packageDetails['averages']); ?>
+    <?= $view->import('blocks/tools/pdepend/average.phtml') ?>
+</div>
+<?php foreach ($packageDetails['classes'] as $className => $classDetails): ?>
+<?php $classId = sha1($packageName . $className); ?>
+<div class="tab-pane" id="pdepend_details_class_<?= $classId ?>_classStats">
+    <?= $view->set('pdependData_current_nb_violations', $classDetails['violations'])->import('blocks/tools/pdepend/violations.phtml') ?>
+    <div class="row"><div class="col-sm-12"><p class="lead text-center">Elements</p></div></div>
+    <div class="row">
+        <div class="col-sm-3"><p class="bg-success text-center"><span class="lead"><?= $classDetails['values']['nom'];?></span><br>Methods</p></div>
+        <div class="col-sm-3"><p class="bg-success text-center"><span class="lead"><?= $classDetails['values']['vars'];?></span><br>Properties</p></div>
+        <div class="col-sm-3"><p class="bg-success text-center"><span class="lead"><?= $classDetails['values']['ca'];?></span><br>Afferent coupling</p></div>
+        <div class="col-sm-3"><p class="bg-success text-center"><span class="lead"><?= $classDetails['values']['ce'];?></span><br>Efferent coupling</p></div>
+    </div>
+    <?php if ($classDetails['values']['nom'] > 0): ?>
+    <hr>
+    <?php $view->set('pdependData_current_average', $classDetails['averages']); ?>
+    <?= $view->import('blocks/tools/pdepend/average.phtml') ?>
+    <?php endif; ?>
+</div>
+<?php if ($classDetails['values']['nom'] > 0): ?>
+<div class="tab-pane" id="pdepend_details_class_<?= $classId ?>_methodStats">
+    <?= $view->set('pdependData_current_nb_violations', $classDetails['violations'])->import('blocks/tools/pdepend/violations.phtml') ?>
+    <div class="row"><div class="col-sm-12"><p class="lead text-center">Methods values</p></div></div>
+    <div class="row">
+        <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Cyclomatic complexity</th>
+                    <th>NPath</th>
+                    <th>Maintainability Index</th>
+                    <th>Halstead effort</th>
+                    <th>Halstead bugs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($classDetails['methods'] as $methodName => $methodDetails): ?>
+                <tr>
+                    <td><code><?= $methodName ?></code></td>
+                    <td<?php if ($methodDetails['violations']['ccn2']): ?> class="text-danger danger"<?php endif ?>><?= $methodDetails['values']['ccn2'] ?></td>
+                    <td<?php if ($methodDetails['violations']['nPath']): ?> class="text-danger danger"<?php endif ?>><?= $methodDetails['values']['nPath'] ?></td>
+                    <td<?php if ($methodDetails['violations']['mi']): ?> class="text-danger danger"<?php endif ?>><?= round($methodDetails['values']['mi'], 3) ?></td>
+                    <td<?php if ($methodDetails['violations']['he']): ?> class="text-danger danger"<?php endif ?>><?= round($methodDetails['values']['he'], 3) ?></td>
+                    <td<?php if ($methodDetails['violations']['hb']): ?> class="text-danger danger"<?php endif ?>><?= round($methodDetails['values']['hb'], 3) ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <p class="lead text-center">Help</p>
+            <dl class="dl-horizontal">
+                <dt>Cyclomatic complexity</dt>
+                <dd>
+                    Measure of the complexity of the method counting the number of decision nodes in its body.<br>
+                    Reduce the number of decision node in violated methods.<br>
+                    Must be <strong>between 0 and 1</strong>.
+                </dd>
+                <dt>NPath</dt>
+                <dd>
+                    Measure of the ability of covering the method with tests by counting the number of path it takes to fully cover it.<br>
+                    Reduce the number of path it takes to cover a method body in violated methods.<br>
+                    Must be <strong>between 0 and 1</strong>.
+                </dd>
+                <dt>Maintainability Index</dt>
+                <dd>
+                    Measure of the maintainability of the method in percentage.<br>
+                    Reduce the number of symbol or tokens in the method to improve the maintainability.<br>
+                    Must be <strong>over 50</strong>.
+                </dd>
+                <dt>Halstead effort</dt>
+                <dd>
+                    Abstract value of the effort it costs to maintain or evolve a method.<br>
+                    No violation possible here, the value is only informative.
+                </dd>
+                <dt>Halstead bugs</dt>
+                <dd>
+                    Estimated number of bugs in the method. It is calculated using the <strong>Halstead effort</strong> described above.<br>
+                    Reduce the number of symbol or tokens in the method to reduce the estimated number of bugs.<br>
+                    Must be <strong>under 0.5</strong>.
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<?php endforeach; ?>

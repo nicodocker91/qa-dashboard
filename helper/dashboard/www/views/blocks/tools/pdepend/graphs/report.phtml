@@ -1,0 +1,8 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<div class="row">
+    <div class="col-sm-6"><?= $view->import('blocks/tools/pdepend/summary-dependency.phtml'); ?></div>
+    <div class="col-sm-6"><?= $view->import('blocks/tools/pdepend/summary-pyramid.phtml'); ?></div>
+</div>

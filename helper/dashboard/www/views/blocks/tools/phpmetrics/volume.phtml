@@ -1,0 +1,17 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<div class="panel panel-<?= $view->get('phpMetricsData_volume_status', 'info')?>">
+    <div class="panel-heading">
+        <h4 class="panel-title">Average Halstead Volume
+            <span class="glyphicon glyphicon-question-sign"
+                  data-toggle="tooltip"
+                  title="The Volume represents the global weight in symbols in the project."></span>
+        </h4>
+    </div>
+    <div class="panel-body">
+        <div class="text-center" style="font-size:x-large"><?= $view->get('phpMetricsData_volume_#', 'N/A')?></div>
+        <div class="text-center">Must be <strong>below 100</strong>.</div>
+    </div>
+</div>

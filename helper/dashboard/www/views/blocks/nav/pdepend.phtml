@@ -1,0 +1,29 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<a href="#" data-toggle="collapse" data-target="#pdepend_userMenu">
+    <i class="fa fa-object-ungroup"></i> PDepend <i class="glyphicon glyphicon-chevron-down"></i>
+    <div class="pull-right">
+        <?php if (0 < $view->get('pdepend_global_violations_#', 0)): ?><span class="label label-danger"><?= $view->get('pdepend_global_violations_#') ?></span>
+        <?php else: ?><span class="label label-success">OK</span>
+        <?php endif;?>
+    </div>
+</a>
+<ul class="nav nav-stacked collapse" id="pdepend_userMenu">
+    <li>
+        <a href="#pdepend" data-toggle="tab">
+            <i class="fa fa-object-group"></i> Statistics
+            <div class="pull-right">
+                <?php if (0 < $view->get('pdepend_global_violations_#', 0)): ?><span class="label label-danger"><?= $view->get('pdepend_global_violations_#') ?></span>
+                <?php else: ?><span class="label label-success">OK</span>
+                <?php endif;?>
+            </div>
+        </a>
+    </li>
+    <li>
+        <a href="#pdepend_graphs" data-toggle="tab">
+            <i class="fa fa-area-chart"></i> Graphics
+        </a>
+    </li>
+</ul>

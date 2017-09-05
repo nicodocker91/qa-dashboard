@@ -1,0 +1,14 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+
+$nbViolations = $view->get('pdependData_current_nb_violations');
+?>
+<?php if ($nbViolations > 0): ?>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="alert alert-danger text-center" role="alert"><strong><span class="lead"><?= $nbViolations ?></span><br>Violations</strong></div>
+    </div>
+</div>
+<hr>
+<?php endif; ?>

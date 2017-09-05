@@ -1,0 +1,59 @@
+<?php
+declare(strict_types = 1);
+$service = \Dashboard\Infrastructure\Parameters::get('service');
+$buildDate = \Dashboard\Infrastructure\View::getInstance()->get('DashboardBuildDate_human');
+?>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title><?= $buildDate ?> - <?= $service ?> - Dashboard</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- favicon -->
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAE1ElEQVR4Xu2dwUtUURTG732OEoiJFO0KAo0wLcHcTwgRtAlCrOgviCCCWtfKpdAm+hOCWRVBtHNdQlQOtiisRRDtBDfO+OaGpqmPefPOmXu9zdjPrefeO37v8zvn++5DreHrv0bAduJPf3569o6x7kSMz5YOublqpVKLcVYnntGRBBifnlmyxp6LAViauoHqQmUtxlmdeAYEgACdx0sUIN4zQQFQgHhsk56EAkiR8q9DAVAAfxaF3gEFCI1o/n4oAAoQj23Sk1AAKVL+dSgACuDPotA7oAChEWUGyEWAKDge2cQnoQBiqLwLmQGYAbxJFHwDFCA4pLkbogAoQDy2SU9CAaRI+dehACiAP4tC74AChEaUHIAcIAcBWgAtIJ7cSE+iBUiR8q9DASIpgFs2x+qNZMb/kRXvYF2y0ju28aa40hgIEIkAtaqZsCZ5L3ko3jXOvegdc9ck+0AACCDhSdyawzgDoAAKDo2WZ4ZLfckRs+FOG2teKpaqS2NdB0MA9aMxZvzy9bM27VluY6l4CQQQQxW/EAK0iXm3D4E7PzYEgAC0gHY4gALIUWMGEGL19sfUyaTW6BeWq8oGN1ZXRka+rGcX0QJUMO4WH4QCvPt+8ZU15mqbH6nlMmfN+NSpxSUIEAhdCCAHkhYgxAoFEAKVU9b1QRAEgADMAB4cQAFagMcQ6MGsZksZAuWAMgQKsWIGEALFEKgHihagx6x1sHIAbwShAH4PiSGQIbC73wlEAVAAcgAPDtACaAG0gDwO4AI8pIUgyA88giAhfgyBQqAIgvRA0QL0mBEEBcKMFiAEkhYgBIoWoAeKFqDHjBYQCDNagBBIWoAQqJwy99UMpus9lza/3Wi4G9aaWb8dWyVr3AaKsY2lAHs/UL2aPDbGPBJ/SG0hbwTJEYMAQqwOSwv4Fw88CzEKkEEkpguAAPvBF/+NIBRAKJWCMhQABWAI3MuBTmgBa0/mrxjXeC34BRaVNJz7cPT+w4lmxShAByoABCjg9WGfASAABKAFtOIACiBq/X+LmAEUeDEEKsCSlBIF56OUFwQxAzADMAMwA5AD5HKAIVDSfHdrGAIVeDEEKsCSlDIEMgQG/48htADJrx4tQIfSdjUtoC3Y8hfRAmgBtIAcDhAE7QeGN4K28SAJJAkkCSQJJAkkCQw0kJMEKoDEBirAkpRiA7GB2EBsYNh/Hk0ULNFeomAdSkTBbeFVuIgZgBmAGYAZgBmgGQe4C+AuYKC6UFnLkoO7AO4CuAvgLoC7AO4CCj2WrIC7ABlOW1XcBSjAkpSSA5ADkAOQA5ADkAMU9wveCdzGiByAHIAcgByAHIAcoLhtiirIAUQw/SkiB1CAJSklByAHIAcgByAHIAco7hfkAOQAxSzZrOCtYBlOO1W4AAVeuAAFWJJSXAAuABeAC8AF4AKK+wUuABdQzBJcgAyjvVW4AAVmuAAFWJJSXAAuABeAC8AF4AKK+wUuABdQzBJcgAwjXIAep60VuIA2gctbhgvABeACcAG4AFxAcWsRu4DFb5O3nLVnirfUV/TVa08vDH/8lV05Wb55vF5K7+p3bNEChtxctVKpZStW5+eHE5veDnVWktif/fcePGu2X/1TqWySRjnUWdl9rLWfS6Ppc8n+YgJINqOm+xD4DZQ00CYyjsx3AAAAAElFTkSuQmCC">
+
+<!-- Dashboard style -->
+<style>
+ul[id$=_userMenu]{padding-left:10%}
+.nav-pills li.active>a,.nav-pills li.active>a:hover{color:#FFF;background-color:#337AB7}
+.nav-pills li>a {border-radius:4px}
+nav.customAffix{width:inherit;padding-right:inherit}
+#home>.row>.container-fluid>.row>div[class^="col-"]>.container-fluid>.row>div[class^="col-"]:last-child,#home>.row>.container-fluid>.row>div[class^="col-"]>.container-fluid>.row>div[class^="col-"]:first-child{padding-right:0}
+#home>.row>.container-fluid>.row>div[class^="col-"]>.container-fluid>.row>div[class^="col-"]:not(:last-child){padding-left:0}
+</style>
+
+<!-- Style for PhpMetrics. -->
+<style>
+.tooltip{position:absolute;background:#333;border-radius:5px;padding:5px 15px;box-shadow:1px 1px 3px;text-align:left;color:#FFF}</style>
+
+<!-- Style for PHPUnit. -->
+<style>
+.bs-callout{padding:12px;margin:0 0 4px;border:1px solid #eee;border-left-width:6px;border-radius:3px}
+.bs-callout-danger{border-left-color:#d9534f}
+.bs-callout-warning{border-left-color:#f0ad4e}
+.bs-callout-info{border-left-color:#5bc0de}
+.bs-callout-success{border-left-color:#5cb85c}
+.bs-callout>h4{margin-top:2px}
+.bs-callout>hr{margin-bottom:8px;margin-top:8px}
+.bs-callout-danger>h4{color:#d9534f}
+.bs-callout-warning>h4{color:#f0ad4e}
+.bs-callout-info>h4{color:#5bc0de}
+.bs-callout-success>h4{color:#5cb85c}
+</style>
+
+<!-- Style for PHP CPD. -->
+<style>
+.phpcpd_snippet>code{padding:0;background-color:inherit}
+</style>
+
+<!-- Style for PDepend. -->
+<style>
+.pdepdend-graph-container>.panel-body{overflow-x:auto}
+#dashboard_home_panel_pdepend_pyramid>.panel-body{text-align:center}
+#dashboard_home_panel_pdepend_pyramid>.panel-body>svg{margin-top:-46px}
+#accordion_pdepend ul.dropdown-menu{width:100%}
+</style>

@@ -1,0 +1,12 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<a href="#phpcs" data-toggle="tab">
+    <i class="glyphicon glyphicon-th-list"></i> PHP Code Sniffer
+    <div class="pull-right">
+        <?php if ($view->get('phpcsData_hasErrors')): ?><span class="label label-danger"><?= $view->get('phpcsData_total_errors_#') ?></span><?php endif;?>
+        <?php if ($view->get('phpcsData_hasWarnings')): ?><span class="label label-warning"><?= $view->get('phpcsData_total_warnings_#') ?></span><?php endif;?>
+        <?php if ($view->get('phpcsData_isSuccess')): ?><span class="label label-success">OK</span><?php endif;?>
+    </div>
+</a>

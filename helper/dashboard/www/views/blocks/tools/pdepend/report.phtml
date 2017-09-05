@@ -1,0 +1,76 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<?php if ($view->get('pdependData_details')): ?>
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h4 class="panel-title">Packages of project</h4></div>
+            <div class="panel-body">
+                <div id="pdepend_toggleDisplay" data-controls="toggleDisplay" class="alert alert-info" role="alert">
+                    <p class="show text-center">Only packages with violations are displayed.
+                        <strong><a role="button"
+                                   data-toggle="toggle"
+                                   data-parent="#pdepend_toggleDisplay"
+                                   href="#pdepend_toggleDisplay_all"
+                                   aria-controls="accordion_pdepend">Display all</a></strong>.
+                    </p>
+                    <p class="hide text-center">All packages are displayed.
+                        <strong><a role="button"
+                                   data-toggle="toggle"
+                                   data-parent="#pdepend_toggleDisplay"
+                                   href="#pdepend_toggleDisplay_only"
+                                   aria-controls="accordion_pdepend">Display only those with violations</a></strong>.
+                    </p>
+                </div>
+                <?php if ($view->get('pdepend_global_violations_#') === 0): ?>
+                <p class="lead text-center text-success">You have no violations on any package.</p>
+                <?php endif; ?>
+                <div class="panel-group" id="accordion_pdepend" role="tablist" aria-multiselectable="true">
+                    <?php foreach ($view->get('pdependData_details')['packages'] as $packageName => $pDependPackageDetail): ?>
+                        <?php $htmlPDependPackageDetailId = sha1(uniqid('pdependAccordion_', true)); ?>
+                        <?php $view->set('pdependData_current_package_name', $packageName); ?>
+                        <?php $view->set('pdependData_current_package_details', $pDependPackageDetail); ?>
+                        <div class="panel panel-default <?php if ($pDependPackageDetail['violations'] === 0): ?> hide<?php endif; ?>"
+                            <?php if ($pDependPackageDetail['violations'] === 0): ?> data-default-displayed="false"<?php endif; ?>
+                        >
+                            <div class="panel-heading" role="tab" id="pdepend_detail_<?= $htmlPDependPackageDetailId ?>_heading">
+                                <h4 class="panel-title">
+                                    <a role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#accordion_pdepend"
+                                       data-target="#pdepend_detail_<?= $htmlPDependPackageDetailId ?>_body"
+                                       href="#pdepend_detail_<?= $htmlPDependPackageDetailId ?>_heading"
+                                       aria-expanded="false"
+                                       aria-controls="pdepend_detail_<?= $htmlPDependPackageDetailId ?>_body">
+                                        <?= $packageName ?>
+                                        <?php if ($pDependPackageDetail['violations'] > 0): ?>
+                                        <span class="pull-right label label-danger"><?= $pDependPackageDetail['violations'] ?></span>
+                                        <?php endif; ?>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="pdepend_detail_<?= $htmlPDependPackageDetailId ?>_body"
+                                 class="panel-collapse collapse"
+                                 role="tabpanel"
+                                 aria-labelledby="pdepend_detail_<?= $htmlPDependPackageDetailId ?>_heading">
+                                <div class="panel-body">
+                                    <div class="container-fluid">
+                                        <div class="col-sm-3">
+                                        <?= $view->import('blocks/tools/pdepend/package/menu.phtml'); ?>
+                                        </div>
+                                        <div class="col-sm-8 col-sm-offset-1">
+                                            <div class="tab-content">
+                                            <?= $view->import('blocks/tools/pdepend/package/details.phtml'); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif;?>
