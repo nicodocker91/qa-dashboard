@@ -71,10 +71,10 @@ class PhpMetrics implements ToolDashboardBuilderInterface, ToolDashboardSummaryI
         $view->set('phpMetricsData_loc_#', \number_format($totalLineOfCode));
         $view->set('phpMetricsData_lloc', $logicalLineOfCode);
         $view->set('phpMetricsData_lloc_#', \number_format($logicalLineOfCode));
-        $view->set('phpMetricsData_lloc_%', 100 * \round($logicalLineOfCode / $totalLineOfCode, 2));
+        $view->set('phpMetricsData_lloc_%', 100 * \round($logicalLineOfCode / \max(1, $totalLineOfCode), 2));
         $view->set('phpMetricsData_cloc', $commentedLineOfCode);
         $view->set('phpMetricsData_cloc_#', \number_format($commentedLineOfCode));
-        $view->set('phpMetricsData_cloc_%', 100 * \round($commentedLineOfCode / $totalLineOfCode, 2));
+        $view->set('phpMetricsData_cloc_%', 100 * \round($commentedLineOfCode / \max(1, $totalLineOfCode), 2));
 
         $view->set('phpMetricsData_nbMethods_#', \number_format($data->sum->nbMethods));
         $view->set('phpMetricsData_nbClasses_#', \number_format($data->sum->nbClasses));

@@ -5,7 +5,7 @@ Docker image to create dashboard about Quality Analytics
 
 To launch the dashboard creation into the container, run:
 
-    docker run --rm --user $(id -u):$(id -g) --volume ${BUILDS_LIST_FOLDER}:/data/build nicodocker91/qa-dashboard ${SERVICE_OR_BUNDLE_NAME}
+    docker run --rm --user $(id -u):$(id -g) --volume /etc/timezone:/etc/timezone:ro --volume /etc/localtime:/etc/localtime:ro --volume ${BUILDS_LIST_FOLDER}:/data/build nicodocker91/qa-dashboard ${SERVICE_OR_BUNDLE_NAME}
 
 ## Requirements
 
@@ -77,7 +77,15 @@ Into this folder, you must have the results of the reports of phpunit, named as 
 
 ## Volumes
 
-The only volume available to mount is `/data`.
+The volume available to mount is `/data`.
 
 The entrypoint is `/data/build`.
+
+### Date-time troubles
+
+In order to keep the same timezone and localtime between your project and the containers from this image, you need to add the following volumes when creating a container:
+
+- `--volume /etc/timezone:/etc/timezone:ro` to mount the timezone.
+- `--volume /etc/localtime:/etc/localtime:ro` to mount the localtime that will be used to parse the reports.
+
 
