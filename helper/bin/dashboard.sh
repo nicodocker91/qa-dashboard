@@ -24,13 +24,14 @@ LOG_BUILD_PATH=/data/build/${SERVICE_NAME}/${BUILD_RELEASE}/logs
 # This value must be in the [0;100] interval and can be a float. Default to 0.
 ACCEPTANCE_VALUE=${2:-0}
 if [ "${ACCEPTANCE_VALUE}" -lt 0 -o "${ACCEPTANCE_VALUE}" -gt 100 ]; then
-    >&2 echo "#Fatal: the second parameter, which is the acceptance value, must be in the interval [0;100]."
+    >&2 echo "#Fatal: the acceptance value must be inside the interval [0;100]."
     >&2 echo "#Fatal: given value is ${ACCEPTANCE_VALUE}."
     >&2 echo ""
+    exit 2
 fi;
 
 mkdir -p ${LOG_BUILD_PATH} 2>/dev/null
 php -f ${__root}/helper/dashboard/dashboard.php build-release=${BUILD_RELEASE} \
     service=${SERVICE_NAME} \
     path-log=${LOG_BUILD_PATH} \
-    acceptance_value=${ACCEPTANCE_VALUE}
+    acceptance-value=${ACCEPTANCE_VALUE}

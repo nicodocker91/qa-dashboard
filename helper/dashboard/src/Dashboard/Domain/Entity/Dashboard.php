@@ -96,7 +96,7 @@ class Dashboard
     public function checkAcceptanceValue(): Dashboard
     {
         if ($this->summary->getGlobalNote() < Parameters::get('acceptance-value')) {
-            $msg = 'Quality level expected not reached! At least %s%% expected while current value is %s%%.';
+            $msg = "# WARNING: Quality level not reached! At least %s%% expected while current value is %.3f%%.\n";
             \fwrite(\STDERR, sprintf($msg, Parameters::get('acceptance-value'), $this->summary->getGlobalNote()));
             exit(90);
         }
