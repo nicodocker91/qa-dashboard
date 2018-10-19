@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Dashboard\Domain\Tool;
 
-use Dashboard\Domain\Generalisation\{ToolDashboardBuilderInterface, ToolDashboardSummaryInterface};
+use Dashboard\Domain\Generalisation\ToolDashboardInterface;
 use Dashboard\Infrastructure\TraitSummary;
 
 /**
@@ -12,7 +12,7 @@ use Dashboard\Infrastructure\TraitSummary;
  * This class manages data for the Sonar Tool logs.
  * @author Nicolas Giraud <nicolas.giraud.dev@gmail.com>
  */
-class Sonar implements ToolDashboardBuilderInterface, ToolDashboardSummaryInterface
+class Sonar implements ToolDashboardInterface
 {
     use TraitSummary;
 

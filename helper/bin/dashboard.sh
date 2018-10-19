@@ -16,8 +16,21 @@ if [ $# -lt 1 ]; then
 fi
 
 BUILD_RELEASE=$(date +'%Y%m%d0000')
+# Name of the service the dashboard will be built.
 SERVICE_NAME=$1
 LOG_BUILD_PATH=/data/build/${SERVICE_NAME}/${BUILD_RELEASE}/logs
 
+# Minimum value required from the global score to reach, otherwise PHP application will give you error an code.
+# This value must be in the [0;100] interval and can be a float. Default to 0.
+ACCEPTANCE_VALUE=${2:-0}
+if [ "${ACCEPTANCE_VALUE}" -lt 0 -o "${ACCEPTANCE_VALUE}" -gt 100 ]; then
+    >&2 echo "#Fatal: the second parameter, which is the acceptance value, must be in the interval [0;100]."
+    >&2 echo "#Fatal: given value is ${ACCEPTANCE_VALUE}."
+    >&2 echo ""
+fi;
+
 mkdir -p ${LOG_BUILD_PATH} 2>/dev/null
-php -f ${__root}/helper/dashboard/dashboard.php build-release=${BUILD_RELEASE} service=${SERVICE_NAME} path-log=${LOG_BUILD_PATH}
+php -f ${__root}/helper/dashboard/dashboard.php build-release=${BUILD_RELEASE} \
+    service=${SERVICE_NAME} \
+    path-log=${LOG_BUILD_PATH} \
+    acceptance_value=${ACCEPTANCE_VALUE}

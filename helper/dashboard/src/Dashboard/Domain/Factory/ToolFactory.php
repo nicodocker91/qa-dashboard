@@ -3,8 +3,7 @@ declare(strict_types = 1);
 
 namespace Dashboard\Domain\Factory;
 
-use Dashboard\Domain\Generalisation\ToolDashboardBuilderInterface;
-use Dashboard\Domain\Generalisation\ToolDashboardSummaryInterface;
+use Dashboard\Domain\Generalisation\ToolDashboardInterface;
 use Dashboard\Domain\Tool\{
     Behat, Gatling, Pdepend, PhpCodeSniffer, PhpCpd, PhpMetrics, PhpStorm, Phpunit, Sonar, Uml
 };
@@ -36,10 +35,10 @@ class ToolFactory
      * Retrieves the singleton instance of the view.
      *
      * @param string $toolName Name of the Tool we must try to instantiate.
-     * @return ToolDashboardBuilderInterface|ToolDashboardSummaryInterface
+     * @return ToolDashboardInterface
      * @throws ToolException
      */
-    public static function build(string $toolName)
+    public static function build(string $toolName): ToolDashboardInterface
     {
         if (\array_key_exists($toolName, static::AVAILABLE_TOOLS)) {
             $toolClass = static::AVAILABLE_TOOLS[$toolName];

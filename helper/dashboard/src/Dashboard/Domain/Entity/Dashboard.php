@@ -4,11 +4,8 @@ declare(strict_types = 1);
 namespace Dashboard\Domain\Entity;
 
 use Dashboard\Domain\Factory\ToolFactory;
-use Dashboard\Domain\Generalisation\ToolDashboardSummaryInterface;
 use Dashboard\Domain\Services\Summary;
-use Dashboard\Infrastructure\{
-    Exception\ToolException, Parameters, View
-};
+use Dashboard\Infrastructure\{Exception\ToolException, Parameters, View};
 
 /**
  * Class Dashboard
@@ -41,10 +38,7 @@ class Dashboard
     {
         $folderToAnalyze = Parameters::get('path-log');
         foreach (\glob($folderToAnalyze . '/*', \GLOB_ONLYDIR) as $logFolder) {
-            $tool = ToolFactory::build(\basename($logFolder));
-            if ($tool instanceof ToolDashboardSummaryInterface) {
-                $tool->setSummary($this->summary);
-            }
+            ToolFactory::build(\basename($logFolder))->setSummary($this->summary);
         }
 
         return $this;
@@ -61,15 +55,22 @@ class Dashboard
         [$year, $month, $day, $hour, $minute] = \sscanf($buildReleaseNumber, '%4d%2d%2d%2d%2d');
         $dateString = $year . '-' . $month . '-' . $day . ' ' . $hour . ':' . $minute;
 
-        // If hour and minutes are "00:00", consider the build as the day only
-        if (0 === $hour && 0 === $minute) {
-            // Format looks like "Monday 27 June 1994"
-            View::getInstance()->set('DashboardBuildDate_human', \strftime('%A %d %B %Y', \strtotime($dateString)));
-        } else {
-            // Format looks like "Monday 27 June 1994 at 21:35"
-            View::getInstance()->set('DashboardBuildDate_human', \strftime('%A %d %B %Y at %R', \strtotime($dateString)));
-        }
+        // If hour and minutes are "00:00", consider the build as the day only.
+        // Format looks like "Monday 27 June 1994" or "Monday 27 June 1994 at 21:35"
+        $format = ['%A %d %B %Y', '%A %d %B %Y at %R'][0 !== ($hour + $minute)];
 
+        View::getInstance()->set('DashboardBuildDate_human', \strftime($format, \strtotime($dateString)));
+        return $this;
+    }
+
+    /**
+     * Calculate the score of the QA for the current sources.
+     *
+     * @return Dashboard
+     */
+    public function calculateScore(): Dashboard
+    {
+        $this->summary->calculateGlobal();
         return $this;
     }
 
@@ -81,9 +82,24 @@ class Dashboard
     public function export(): Dashboard
     {
         $folder = Parameters::get('path-log');
-        \file_put_contents($folder . '/summary.json', $this->summary->calculateGlobal()->export());
+        \file_put_contents($folder . '/summary.json', $this->summary->export());
         \file_put_contents($folder . '/dashboard.html', View::getInstance()->import('dashboard.phtml'));
 
+        return $this;
+    }
+
+    /**
+     * Ensure the given acceptance value is validated.
+     *
+     * @return Dashboard
+     */
+    public function checkAcceptanceValue(): Dashboard
+    {
+        if ($this->summary->getGlobalNote() < Parameters::get('acceptance-value')) {
+            $msg = 'Quality level expected not reached! At least %s%% expected while current value is %s%%.';
+            \fwrite(\STDERR, sprintf($msg, Parameters::get('acceptance-value'), $this->summary->getGlobalNote()));
+            exit(90);
+        }
         return $this;
     }
 }

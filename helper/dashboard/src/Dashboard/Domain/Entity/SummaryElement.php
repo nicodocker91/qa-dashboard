@@ -85,11 +85,6 @@ class SummaryElement
      */
     public function toArray(): array
     {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-            'value' => $this->getValue(),
-            'coefficient' => $this->getCoefficient(),
-        ];
+        return \get_object_vars($this);
     }
 }

@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Dashboard\Domain\Tool;
 
-use Dashboard\Domain\Generalisation\{ToolDashboardBuilderInterface, ToolDashboardSummaryInterface};
+use Dashboard\Domain\Generalisation\ToolDashboardInterface;
 use Dashboard\Domain\Services\Pdepend\Average;
 use Dashboard\Infrastructure\Parameters;
 use Dashboard\Infrastructure\TraitSummary;
@@ -16,7 +16,7 @@ use SimpleXMLElement;
  * This class manages data for the Pdepend Tool logs.
  * @author Nicolas Giraud <nicolas.giraud.dev@gmail.com>
  */
-class Pdepend implements ToolDashboardBuilderInterface, ToolDashboardSummaryInterface
+class Pdepend implements ToolDashboardInterface
 {
     use TraitSummary;
 
@@ -27,7 +27,7 @@ class Pdepend implements ToolDashboardBuilderInterface, ToolDashboardSummaryInte
     public const TOOL_NAME = 'pDepend';
 
     /** @var float Coefficient taken to calculate the global ranking. */
-    public const SUMMARY_COEFFICIENT = 1.5;
+    public const SUMMARY_COEFFICIENT = 1;
 
     /**
      * PhpCpd constructor.

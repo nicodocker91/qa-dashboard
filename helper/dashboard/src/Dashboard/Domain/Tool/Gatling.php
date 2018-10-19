@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Dashboard\Domain\Tool;
 
-use Dashboard\Domain\Generalisation\{ToolDashboardBuilderInterface, ToolDashboardSummaryInterface};
+use Dashboard\Domain\Generalisation\ToolDashboardInterface;
 use Dashboard\Infrastructure\TraitSummary;
 
 /**
@@ -12,7 +12,7 @@ use Dashboard\Infrastructure\TraitSummary;
  * This class manages data for the Gatling Tool logs.
  * @author Nicolas Giraud <nicolas.giraud.dev@gmail.com>
  */
-class Gatling implements ToolDashboardBuilderInterface, ToolDashboardSummaryInterface
+class Gatling implements ToolDashboardInterface
 {
     use TraitSummary;
 
@@ -23,7 +23,7 @@ class Gatling implements ToolDashboardBuilderInterface, ToolDashboardSummaryInte
     public const TOOL_NAME = 'Gatling';
 
     /** @var float Coefficient taken to calculate the global ranking. */
-    public const SUMMARY_COEFFICIENT = 2;
+    public const SUMMARY_COEFFICIENT = 0;
 
     /**
      * @inheritDoc

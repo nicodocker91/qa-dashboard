@@ -21,7 +21,17 @@ class Summary
     /**
      * @var float Global note value of the whole current analytics.
      */
-    protected $globalNote;
+    protected $globalNote = 0;
+
+    /**
+     * Returns the global note score calculated.
+     *
+     * @return float
+     */
+    public function getGlobalNote(): float
+    {
+        return $this->globalNote;
+    }
 
     /**
      * Add a summary value to the list to be able to calculate a global project value.
@@ -48,7 +58,6 @@ class Summary
             return $this;
         }
 
-        $this->globalNote = 0;
         $finalCoefficient = 0;
         foreach ($this->summaryList as $summaryElement) {
             $this->globalNote += $summaryElement->getValue() * $summaryElement->getCoefficient();

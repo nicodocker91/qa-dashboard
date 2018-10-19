@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Dashboard\Domain\Tool;
 
-use Dashboard\Domain\Generalisation\{ToolDashboardBuilderInterface, ToolDashboardSummaryInterface};
+use Dashboard\Domain\Generalisation\ToolDashboardInterface;
 use Dashboard\Infrastructure\TraitSummary;
 
 /**
@@ -12,7 +12,7 @@ use Dashboard\Infrastructure\TraitSummary;
  * Default class that is a substitution if the required tool was not run.
  * @author Nicolas Giraud <nicolas.giraud.dev@gmail.com>
  */
-class DefaultTool implements ToolDashboardBuilderInterface, ToolDashboardSummaryInterface
+class DefaultTool implements ToolDashboardInterface
 {
     use TraitSummary;
 

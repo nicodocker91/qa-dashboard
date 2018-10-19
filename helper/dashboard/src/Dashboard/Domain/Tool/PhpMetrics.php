@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Dashboard\Domain\Tool;
 
 use Dashboard\Domain\Entity\SummaryElement;
-use Dashboard\Domain\Generalisation\{ToolDashboardBuilderInterface, ToolDashboardSummaryInterface};
+use Dashboard\Domain\Generalisation\ToolDashboardInterface;
 use Dashboard\Domain\Services\Summary;
 use Dashboard\Infrastructure\TraitSummary;
 use Dashboard\Infrastructure\Parameters;
@@ -16,7 +16,7 @@ use Dashboard\Infrastructure\View;
  * This class manages data for the PhpMetrics Tool logs.
  * @author Nicolas Giraud <nicolas.giraud.dev@gmail.com>
  */
-class PhpMetrics implements ToolDashboardBuilderInterface, ToolDashboardSummaryInterface
+class PhpMetrics implements ToolDashboardInterface
 {
     use TraitSummary;
 
@@ -136,14 +136,15 @@ class PhpMetrics implements ToolDashboardBuilderInterface, ToolDashboardSummaryI
                     static::LOG_FOLDER_NAME . '_cc',
                     'Cyclomatic complexity',
                     $this->calculateCCSummary(),
-                    2
+                    4
                 )
             )
             ->addSummary(
                 new SummaryElement(
                     static::LOG_FOLDER_NAME . '_mi',
                     'Maintainability index',
-                    $this->calculateMISummary()
+                    $this->calculateMISummary(),
+                    4
                 )
             )
             ->addSummary(
@@ -151,7 +152,7 @@ class PhpMetrics implements ToolDashboardBuilderInterface, ToolDashboardSummaryI
                     static::LOG_FOLDER_NAME . '_bugs',
                     'Bugs probability',
                     $this->calculateBugsSummary(),
-                    0.5
+                    3
                 )
             )
             ->addSummary(
@@ -159,7 +160,7 @@ class PhpMetrics implements ToolDashboardBuilderInterface, ToolDashboardSummaryI
                     static::LOG_FOLDER_NAME . '_volume',
                     'Volume of code',
                     $this->calculateVolumeSummary(),
-                    0.5
+                    2
                 )
             );
 

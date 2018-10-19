@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Dashboard\Domain\Tool;
 
-use Dashboard\Domain\Generalisation\{ToolDashboardBuilderInterface, ToolDashboardSummaryInterface};
+use Dashboard\Domain\Generalisation\ToolDashboardInterface;
 use Dashboard\Infrastructure\TraitSummary;
 
 /**
@@ -12,7 +12,7 @@ use Dashboard\Infrastructure\TraitSummary;
  * This class manages data for the PhpStorm Tool logs.
  * @author Nicolas Giraud <nicolas.giraud.dev@gmail.com>
  */
-class PhpStorm implements ToolDashboardBuilderInterface, ToolDashboardSummaryInterface
+class PhpStorm implements ToolDashboardInterface
 {
     use TraitSummary;
 
@@ -23,7 +23,7 @@ class PhpStorm implements ToolDashboardBuilderInterface, ToolDashboardSummaryInt
     public const TOOL_NAME = 'PHPStorm Inspections';
 
     /** @var float Coefficient taken to calculate the global ranking. */
-    public const SUMMARY_COEFFICIENT = 1.5;
+    public const SUMMARY_COEFFICIENT = 0;
 
     /**
      * @inheritDoc

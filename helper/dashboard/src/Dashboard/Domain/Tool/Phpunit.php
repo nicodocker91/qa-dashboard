@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Dashboard\Domain\Tool;
 
 use Dashboard\Domain\Entity\SummaryElement;
-use Dashboard\Domain\Generalisation\{ToolDashboardBuilderInterface, ToolDashboardSummaryInterface};
+use Dashboard\Domain\Generalisation\ToolDashboardInterface;
 use Dashboard\Domain\Services\Summary;
 use Dashboard\Infrastructure\TraitSummary;
 use Dashboard\Infrastructure\Parameters;
@@ -17,7 +17,7 @@ use SimpleXMLElement;
  * This class manages data for the Phpunit Tool logs.
  * @author Nicolas Giraud <nicolas.giraud.dev@gmail.com>
  */
-class Phpunit implements ToolDashboardBuilderInterface, ToolDashboardSummaryInterface
+class Phpunit implements ToolDashboardInterface
 {
     use TraitSummary;
 
@@ -391,7 +391,7 @@ class Phpunit implements ToolDashboardBuilderInterface, ToolDashboardSummaryInte
                     static::LOG_FOLDER_NAME . '_unit',
                     'Unit tests',
                     $this->calculatePhpUnitSummary('unit'),
-                    8
+                    6
                 )
             )
             ->addSummary(
@@ -407,7 +407,7 @@ class Phpunit implements ToolDashboardBuilderInterface, ToolDashboardSummaryInte
                     static::LOG_FOLDER_NAME . '_functional_orm',
                     'Functional tests (ORM)',
                     $this->calculatePhpUnitSummary('functional_orm'),
-                    4
+                    0
                 )
             )
             ->addSummary(
@@ -415,7 +415,7 @@ class Phpunit implements ToolDashboardBuilderInterface, ToolDashboardSummaryInte
                     static::LOG_FOLDER_NAME . '_functional_odm',
                     'Functional tests (ODM)',
                     $this->calculatePhpUnitSummary('functional_odm'),
-                    4
+                    0
                 )
             )
             ->addSummary(
@@ -423,7 +423,7 @@ class Phpunit implements ToolDashboardBuilderInterface, ToolDashboardSummaryInte
                     static::LOG_FOLDER_NAME . '_functional_couchdb',
                     'Functional tests (CouchDB)',
                     $this->calculatePhpUnitSummary('functional_couchdb'),
-                    4
+                    0
                 )
             );
 

@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Dashboard\Domain\Tool;
 
-use Dashboard\Domain\Generalisation\{ToolDashboardBuilderInterface, ToolDashboardSummaryInterface};
+use Dashboard\Domain\Generalisation\ToolDashboardInterface;
 use Dashboard\Infrastructure\TraitSummary;
 use Dashboard\Infrastructure\Parameters;
 use Dashboard\Infrastructure\SyntaxHighlighter;
@@ -16,7 +16,7 @@ use SimpleXMLElement;
  * This class manages data for the PHP Copy/Paste Detector Tool logs.
  * @author Nicolas Giraud <nicolas.giraud.dev@gmail.com>
  */
-class PhpCpd implements ToolDashboardBuilderInterface, ToolDashboardSummaryInterface
+class PhpCpd implements ToolDashboardInterface
 {
     use TraitSummary;
 
@@ -27,7 +27,7 @@ class PhpCpd implements ToolDashboardBuilderInterface, ToolDashboardSummaryInter
     public const TOOL_NAME = 'PHP Copy/Paste detector';
 
     /** @var float Coefficient taken to calculate the global ranking. */
-    public const SUMMARY_COEFFICIENT = 0.75;
+    public const SUMMARY_COEFFICIENT = 0.5;
 
     /**
      * PhpCpd constructor.

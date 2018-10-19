@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Dashboard\Domain\Tool;
 
-use Dashboard\Domain\Generalisation\{ToolDashboardBuilderInterface, ToolDashboardSummaryInterface};
+use Dashboard\Domain\Generalisation\ToolDashboardInterface;
 use Dashboard\Infrastructure\TraitSummary;
 
 /**
@@ -12,7 +12,7 @@ use Dashboard\Infrastructure\TraitSummary;
  * This class manages data for the Behat Tool logs.
  * @author Nicolas Giraud <nicolas.giraud.dev@gmail.com>
  */
-class Behat implements ToolDashboardBuilderInterface, ToolDashboardSummaryInterface
+class Behat implements ToolDashboardInterface
 {
     use TraitSummary;
 
@@ -23,7 +23,7 @@ class Behat implements ToolDashboardBuilderInterface, ToolDashboardSummaryInterf
     public const TOOL_NAME = 'Behat';
 
     /** @var float Coefficient taken to calculate the global ranking. */
-    public const SUMMARY_COEFFICIENT = 4;
+    public const SUMMARY_COEFFICIENT = 0;
 
 
     /**

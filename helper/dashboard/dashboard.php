@@ -12,4 +12,5 @@ set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__ . DIRECTORY_SEPAR
 // Process to prepare all variables in the view.
 Parameters::parseArguments($argv);
 
-(new Dashboard(new Summary()))->detectBuildTime()->parseTools()->export();
+/** @noinspection PhpUnhandledExceptionInspection */
+(new Dashboard(new Summary()))->detectBuildTime()->parseTools()->calculateScore()->export()->checkAcceptanceValue();
