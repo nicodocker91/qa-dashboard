@@ -1,0 +1,30 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<div class="panel panel-primary">
+    <div class="panel-heading"><h4 class="panel-title">Newman</h4></div>
+    <div class="panel-body">
+        <div class="row">
+            <?php if (!$view->get('newmanData_isSuccess', false)): ?>
+            <div class="col-sm-6 text-center">
+                <span class="label label-danger">&nbsp;</span>&nbsp;<?= $view->get('newmanData_total_summary_failures_#') ?> failures.
+            </div>
+            <div class="col-sm-6 text-center">
+                <span class="label label-success">&nbsp;</span>&nbsp;<?= $view->get('newmanData_total_summary_passed_#') ?> passed.
+            </div>
+            <?php else: ?>
+            <div class="col-sm-12 text-center">
+                <span class="label label-success">&nbsp;</span>&nbsp;<?= $view->get('newmanData_total_summary_passed_#') ?> passed.
+            </div>
+            <?php endif;?>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <strong><?= $view->get('newmanData_total_summary_tests_#', 0) ?> tests in <?= $view->get('newmanData_total_summary_requests_#', 0) ?> requests.</strong><br>
+                <strong>Total run time: <?= round($view->get('newmanData_total_time', 0), 3) ?> seconds.</strong>
+            </div>
+        </div>
+    </div>
+</div>

@@ -22,6 +22,7 @@ $view = \Dashboard\Infrastructure\View::getInstance();
 <br>
 <div class="row">
     <div class="col-sm-12 text-center">
-        <strong><?= $view->get('phpunitData_total_summary_assertions_#', 'N/A') ?> assertions in <?= $view->get('phpunitData_total_summary_tests_#', 'N/A') ?> tests.</strong>
+        <strong><?= $view->get('phpunitData_total_summary_assertions_#', 'N/A') ?> assertions in <?= $view->get('phpunitData_total_summary_tests_#', 'N/A') ?> tests.</strong><br>
+        <strong>Total run time: <?= round($view->get('phpunitData_total_time', 0), 3) ?> seconds.</strong>
     </div>
 </div>

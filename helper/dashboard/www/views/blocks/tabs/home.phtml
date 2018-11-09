@@ -19,14 +19,19 @@ $view = \Dashboard\Infrastructure\View::getInstance();
                 <div class="col-sm-8">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-sm-12">
-                                <?= $view->import('blocks/tools/phpunit/all-panels.phtml'); ?>
+                            <div class="col-sm-<?= $view->get('newmanData_exists', false) ? 6 : 12 ?> <?= $view->get('newmanData_exists', false) ? 'odd' : 'full' ?>">
+                                <?php if ($view->get('phpunitData_unit_exists', false)): echo $view->import('blocks/tools/phpunit/all-panels.phtml'); endif; ?>
                             </div>
-                            <div class="col-sm-6">
+                            <?php if ($view->get('newmanData_exists', false)): ?>
+                            <div class="col-sm-6 even">
+                                 <?= $view->import('blocks/tools/newman/summary.phtml'); ?>
+                            </div>
+                            <?php endif; ?>
+                            <div class="col-sm-6 odd">
                                 <?= $view->import('blocks/tools/phpmetrics/numberOfStructures.phtml'); ?>
                                 <?= $view->import('blocks/tools/phpcs/summary.phtml'); ?>
                             </div>
-                            <div class="col-sm-6"><?= $view->import('blocks/tools/pdepend/summary-pyramid.phtml'); ?></div>
+                            <div class="col-sm-6 even"><?= $view->import('blocks/tools/pdepend/summary-pyramid.phtml'); ?></div>
                         </div>
                         <div class="row"><?= $view->import('blocks/tools/phpmetrics/locStatistics.phtml'); ?></div>
                     </div>

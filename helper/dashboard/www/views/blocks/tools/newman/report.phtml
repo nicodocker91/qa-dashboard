@@ -1,0 +1,101 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+$details = $view->get('newmanData_details');
+?>
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">Newman - Statistics</h4>
+        </div>
+        <div class="panel-body">
+            <div class="progress">
+                <div class="progress-bar progress-bar-danger" style="width: <?= $view->get('newmanData_total_summary_failures_%', 0)?>%">
+                    <span><?= $view->get('newmanData_total_summary_failures_#', 0)?> (<?= $view->get('newmanData_total_summary_failures_%', 0)?> %)</span>
+                </div>
+                <div class="progress-bar progress-bar-success" style="width: <?= $view->get('newmanData_total_summary_passed_%', 0)?>%">
+                    <span><?= $view->get('newmanData_total_summary_passed_#', 0)?> (<?= $view->get('newmanData_total_summary_passed_%', 0)?> %)</span>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-sm-6"><span class="label label-danger">&nbsp;</span>&nbsp;<em>Failures.</em></div>
+                <div class="col-sm-6"><span class="label label-success">&nbsp;</span>&nbsp;<em>Passed.</em></div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php if (!empty($details)): ?>
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">Newman</h4>
+        </div>
+        <div class="panel-body">
+            <div id="newman_toggleDisplay" data-controls="toggleDisplay" class="alert alert-info" role="alert">
+                <p class="show text-center">Only failed tests are displayed.
+                    <strong><a role="button"
+                               data-toggle="toggle"
+                               data-parent="#newman_toggleDisplay"
+                               href="#newman_toggleDisplay_all"
+                               aria-controls="accordion_newman">Display all</a></strong>.
+                </p>
+                <p class="hide text-center">All tests are displayed.
+                    <strong><a role="button"
+                               data-toggle="toggle"
+                               data-parent="#newman_toggleDisplay"
+                               href="#newman_toggleDisplay_only"
+                               aria-controls="accordion_newman">Display only invalid</a></strong>.
+                </p>
+            </div>
+            <div class="panel-group" id="accordion_newman" role="tablist" aria-multiselectable="true">
+                <?php foreach ($details as $testSuiteName => $testSuiteDetails): ?>
+                    <?php $htmlTestSuiteId = sha1($testSuiteName); ?>
+                    <div class="panel panel-default <?php if ($testSuiteDetails['success']): ?> hide<?php endif; ?>"
+                        <?php if ($testSuiteDetails['success']): ?> data-default-displayed="false"<?php endif; ?>
+                    >
+                        <div class="panel-heading" role="tab" id="newman_testSuite_<?= $htmlTestSuiteId ?>_heading">
+                            <h4 class="panel-title">
+                                <a role="button"
+                                   data-toggle="collapse"
+                                   data-parent="#accordion_newman"
+                                   data-target="#newman_testSuite_<?= $htmlTestSuiteId ?>_body"
+                                   href="#newman_testSuite_<?= $htmlTestSuiteId ?>_heading"
+                                   aria-expanded="false"
+                                   aria-controls="newman_testSuite_<?= $htmlTestSuiteId ?>_body">
+                                    <?= $testSuiteName ?>
+                                    <div class="pull-right">
+                                        <?php if (0 !== $testSuiteDetails['passed']): ?>&nbsp;<span class="label label-success"><?= $testSuiteDetails['passed'] ?></span><?php endif;?>
+                                        <?php if (0 !== $testSuiteDetails['failures']): ?>&nbsp;<span class="label label-danger"><?= $testSuiteDetails['failures'] ?></span><?php endif;?>
+                                    </div>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="newman_testSuite_<?= $htmlTestSuiteId ?>_body"
+                             class="panel-collapse collapse"
+                             role="tabpanel"
+                             aria-labelledby="newman_testSuite_<?= $htmlTestSuiteId ?>_heading">
+                            <div class="panel-body">
+                                <div class="text-center">
+                                    <strong><?= $testSuiteDetails['tests'] ?> tests in <?= $testSuiteDetails['time'] ?> seconds.</strong>
+                                </div>
+                                <hr>
+                                <?php foreach ($testSuiteDetails['details'] as $testCaseName => $testCaseDetails): ?>
+                                    <?php
+                                    $htmlCalloutClass = '';
+                                    $htmlCalloutClass = (true === $testCaseDetails['success']) ? 'bs-callout-success hide' : $htmlCalloutClass;
+                                    $htmlCalloutClass = (false === $testCaseDetails['success']) ? 'bs-callout-danger' : $htmlCalloutClass;
+                                    ?>
+                                    <div class="bs-callout <?= $htmlCalloutClass ?>"<?php if (true === $testCaseDetails['success']): ?> data-default-displayed="false"<?php endif; ?>>
+                                        <h4><?= $testCaseName ?></h4>
+                                        <?php if (!empty($testCaseDetails['message'])): ?><pre style="margin-bottom:0"><?= $testCaseDetails['message'] ?></pre><?php endif; ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

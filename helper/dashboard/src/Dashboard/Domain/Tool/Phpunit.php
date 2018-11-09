@@ -161,6 +161,7 @@ class Phpunit implements ToolDashboardInterface
         $nbErrors = (int)$summaryAttributes->errors;
         $nbFailures = (int)$summaryAttributes->failures;
         $nbSkipped = (int)$summaryAttributes->skipped;
+        $time = (float)$summaryAttributes->time;
 
         // Add in the total.
         $isSuccess = $view->get('phpunitData_total_summary_is_success', true);
@@ -184,6 +185,10 @@ class Phpunit implements ToolDashboardInterface
         $view->set(
             'phpunitData_total_summary_skipped_#',
             $view->get('phpunitData_total_summary_skipped_#', 0) + $nbSkipped
+        );
+        $view->set(
+            'phpunitData_total_time',
+            $view->get('phpunitData_total_time', 0) + $time
         );
 
         $nbSuccess = $nbTests - ($nbErrors + $nbFailures + $nbSkipped);

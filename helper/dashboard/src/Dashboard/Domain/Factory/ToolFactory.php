@@ -5,7 +5,7 @@ namespace Dashboard\Domain\Factory;
 
 use Dashboard\Domain\Generalisation\ToolDashboardInterface;
 use Dashboard\Domain\Tool\{
-    Behat, Gatling, Pdepend, PhpCodeSniffer, PhpCpd, PhpMetrics, PhpStorm, Phpunit, Sonar, Uml
+    Behat, Gatling, Newman, Pdepend, PhpCodeSniffer, PhpCpd, PhpMetrics, PhpStorm, Phpunit, Sonar, Uml
 };
 use Dashboard\Infrastructure\Exception\ToolException;
 
@@ -21,6 +21,7 @@ class ToolFactory
     protected const AVAILABLE_TOOLS = [
         Behat::LOG_FOLDER_NAME => Behat::class,
         Gatling::LOG_FOLDER_NAME => Gatling::class,
+        Newman::LOG_FOLDER_NAME => Newman::class,
         Pdepend::LOG_FOLDER_NAME => Pdepend::class,
         PhpCodeSniffer::LOG_FOLDER_NAME => PhpCodeSniffer::class,
         PhpCpd::LOG_FOLDER_NAME => PhpCpd::class,

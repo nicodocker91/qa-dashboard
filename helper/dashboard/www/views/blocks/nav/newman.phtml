@@ -1,0 +1,11 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<a href="#newman" data-toggle="tab">
+    <i class="fas fa-rocket"></i> Newman
+    <div class="pull-right">
+        <?php if (0 < $view->get('newmanData_total_summary_failures_#', 0)): ?><span class="label label-danger"><?= $view->get('newmanData_total_summary_failures_#') ?></span><?php endif;?>
+        <?php if ($view->get('newmanData_isSuccess')): ?><span class="label label-success">OK</span><?php endif;?>
+    </div>
+</a>
