@@ -37,45 +37,6 @@ $view = \Dashboard\Infrastructure\View::getInstance();
         </a>
     </li>
     <?php endif; ?>
-    <?php if ($view->get('phpunitData_functional_couchdb_exists', false)): ?>
-    <li>
-        <a href="#phpunit_functional_couchdb" data-toggle="tab">
-            <i class="fa fa-database"></i> Func. CouchDB
-            <div class="pull-right">
-                <?php if ($view->get('phpunitData_functional_couchdb_summary_errors_#', 0)): ?>&nbsp;<span class="label label-danger"><?= $view->get('phpunitData_functional_couchdb_summary_errors_#') ?></span><?php endif;?>
-                <?php if ($view->get('phpunitData_functional_couchdb_summary_failures_#', 0)): ?>&nbsp;<span class="label label-warning"><?= $view->get('phpunitData_functional_couchdb_summary_failures_#') ?></span><?php endif;?>
-                <?php if ($view->get('phpunitData_functional_couchdb_summary_skipped_#', 0)): ?>&nbsp;<span class="label label-info"><?= $view->get('phpunitData_functional_couchdb_summary_skipped_#') ?></span><?php endif;?>
-                <?php if ($view->get('phpunitData_functional_couchdb_summary_is_success', false)): ?>&nbsp;<span class="label label-success">OK</span><?php endif;?>
-            </div>
-        </a>
-    </li>
-    <?php endif; ?>
-    <?php if ($view->get('phpunitData_functional_odm_exists', false)): ?>
-    <li>
-        <a href="#phpunit_functional_odm" data-toggle="tab">
-            <i class="fa fa-database"></i> Func. ODM
-            <div class="pull-right">
-                <?php if ($view->get('phpunitData_functional_odm_summary_errors_#', 0)): ?>&nbsp;<span class="label label-danger"><?= $view->get('phpunitData_functional_odm_summary_errors_#') ?></span><?php endif;?>
-                <?php if ($view->get('phpunitData_functional_odm_summary_failures_#', 0)): ?>&nbsp;<span class="label label-warning"><?= $view->get('phpunitData_functional_odm_summary_failures_#') ?></span><?php endif;?>
-                <?php if ($view->get('phpunitData_functional_odm_summary_skipped_#', 0)): ?>&nbsp;<span class="label label-info"><?= $view->get('phpunitData_functional_odm_summary_skipped_#') ?></span><?php endif;?>
-                <?php if ($view->get('phpunitData_functional_odm_summary_is_success', false)): ?>&nbsp;<span class="label label-success">OK</span><?php endif;?>
-            </div>
-        </a>
-    </li>
-    <?php endif; ?>
-    <?php if ($view->get('phpunitData_functional_orm_exists', false)): ?>
-    <li>
-        <a href="#phpunit_functional_orm" data-toggle="tab">
-            <i class="fa fa-database"></i> Func. ORM
-            <div class="pull-right">
-                <?php if ($view->get('phpunitData_functional_orm_summary_errors_#', 0)): ?>&nbsp;<span class="label label-danger"><?= $view->get('phpunitData_functional_orm_summary_errors_#') ?></span><?php endif;?>
-                <?php if ($view->get('phpunitData_functional_orm_summary_failures_#', 0)): ?>&nbsp;<span class="label label-warning"><?= $view->get('phpunitData_functional_orm_summary_failures_#') ?></span><?php endif;?>
-                <?php if ($view->get('phpunitData_functional_orm_summary_skipped_#', 0)): ?>&nbsp;<span class="label label-info"><?= $view->get('phpunitData_functional_orm_summary_skipped_#') ?></span><?php endif;?>
-                <?php if ($view->get('phpunitData_functional_orm_summary_is_success', false)): ?>&nbsp;<span class="label label-success">OK</span><?php endif;?>
-            </div>
-        </a>
-    </li>
-    <?php endif; ?>
 </ul>
 <?php endif; ?>
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # Author: Nicolas Giraud <nicolas.giraud.dev@gmail.com>
-# Copyright (c) 2017
+# Copyright (c) 2017-2019
 # License: MIT
 
 set -o errexit  # Make your script exit when a command fails.

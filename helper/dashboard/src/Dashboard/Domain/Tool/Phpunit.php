@@ -3,11 +3,9 @@ declare(strict_types = 1);
 
 namespace Dashboard\Domain\Tool;
 
-use Dashboard\Domain\Entity\SummaryElement;
 use Dashboard\Domain\Generalisation\ToolDashboardInterface;
-use Dashboard\Domain\Services\Summary;
-use Dashboard\Infrastructure\TraitSummary;
 use Dashboard\Infrastructure\Parameters;
+use Dashboard\Infrastructure\TraitSummary;
 use Dashboard\Infrastructure\View;
 use SimpleXMLElement;
 
@@ -24,20 +22,17 @@ class Phpunit implements ToolDashboardInterface
     /** @var string Name of the folder where all logs of this tool are stored. */
     public const LOG_FOLDER_NAME = 'phpunit';
 
+    /** @var string Human readable name of the tool. */
+    public const TOOL_NAME = 'PHPUnit with Coverage';
+
+    /** @var float Coefficient taken to calculate the global ranking. */
+    public const SUMMARY_COEFFICIENT = 12;
+
     /** @var string File name of the JUnit XML file report on unit tests. */
     protected const PHPUNIT_REPORT_FILE_UNIT = 'phpunit-unit.xml';
 
     /** @var string File name of the Clover XML file report on code coverage unit tests. */
     protected const CODE_COVERAGE_UNIT = 'coverage-clover.xml';
-
-    /** @var string File name of the JUnit XML file report on CouchDB functional tests. */
-    protected const PHPUNIT_REPORT_FILE_FUNCTIONAL_COUCHDB = 'phpunit-functional-couchdb.xml';
-
-    /** @var string File name of the JUnit XML file report on ODM functional tests. */
-    protected const PHPUNIT_REPORT_FILE_FUNCTIONAL_ODM = 'phpunit-functional-odm.xml';
-
-    /** @var string File name of the JUnit XML file report on ORM functional tests. */
-    protected const PHPUNIT_REPORT_FILE_FUNCTIONAL_ORM = 'phpunit-functional-orm.xml';
 
     /**
      * Phpunit constructor.
@@ -54,10 +49,7 @@ class Phpunit implements ToolDashboardInterface
         $view->set('phpunitData_total_summary_failures_#', 0);
         $view->set('phpunitData_total_summary_skipped_#', 0);
 
-        $this->parsePhpUnitUnit()
-            ->parsePhpUnitFunctionalOrm()
-            ->parsePhpUnitFunctionalOdm()
-            ->parsePhpUnitFunctionalCouchDb();
+        $this->parsePhpUnit();
 
         // Review values of total for formatting.
         $view->set(
@@ -86,61 +78,22 @@ class Phpunit implements ToolDashboardInterface
      * Prepares the summary and the details to help the view display the data of the PHPUnit tests.
      * @return Phpunit
      */
-    protected function parsePhpUnitUnit(): Phpunit
+    protected function parsePhpUnit(): Phpunit
     {
         $folder = Parameters::get('path-log') . '/' . static::LOG_FOLDER_NAME;
         $jUnitReport = $folder . \DIRECTORY_SEPARATOR . static::PHPUNIT_REPORT_FILE_UNIT;
         $coverageReport = $folder . \DIRECTORY_SEPARATOR . static::CODE_COVERAGE_UNIT;
 
-        return $this->parseData('unit', $jUnitReport)->parseCoverage('unit', $coverageReport);
-    }
-
-    /**
-     * Prepares the summary and the details to help the view display the data of the PHPUnit functional Orm tests.
-     * @return Phpunit
-     */
-    protected function parsePhpUnitFunctionalOrm(): Phpunit
-    {
-        $folder = Parameters::get('path-log') . '/' . static::LOG_FOLDER_NAME;
-        $jUnitReport = $folder . \DIRECTORY_SEPARATOR . static::PHPUNIT_REPORT_FILE_FUNCTIONAL_ORM;
-
-        return $this->parseData('functional_orm', $jUnitReport);
-    }
-
-
-    /**
-     * Prepares the summary and the details to help the view display the data of the PHPUnit functional Odm tests.
-     * @return Phpunit
-     */
-    protected function parsePhpUnitFunctionalOdm(): Phpunit
-    {
-        $folder = Parameters::get('path-log') . '/' . static::LOG_FOLDER_NAME;
-        $jUnitReport = $folder . \DIRECTORY_SEPARATOR . static::PHPUNIT_REPORT_FILE_FUNCTIONAL_ODM;
-
-        return $this->parseData('functional_odm', $jUnitReport);
-    }
-
-
-    /**
-     * Prepares the summary and the details to help the view display the data of the PHPUnit functional CouchDb tests.
-     * @return Phpunit
-     */
-    protected function parsePhpUnitFunctionalCouchDb(): Phpunit
-    {
-        $folder = Parameters::get('path-log') . '/' . static::LOG_FOLDER_NAME;
-        $jUnitReport = $folder . \DIRECTORY_SEPARATOR . static::PHPUNIT_REPORT_FILE_FUNCTIONAL_COUCHDB;
-
-        return $this->parseData('functional_couchdb', $jUnitReport);
+        return $this->parseData($jUnitReport)->parseCoverage($coverageReport);
     }
 
     /**
      * Parses the jUnit reports to extract the values in summary and in details.
      *
-     * @param string $type
      * @param string $jUnitReportFile
      * @return Phpunit
      */
-    private function parseData(string $type, string $jUnitReportFile): Phpunit
+    private function parseData(string $jUnitReportFile): Phpunit
     {
         // Use xml report to get detailed error and warning information.
         if (!\is_readable($jUnitReportFile) || '' === \trim($xml = \file_get_contents($jUnitReportFile))) {
@@ -151,7 +104,7 @@ class Phpunit implements ToolDashboardInterface
         // been run.
         $view = View::getInstance()->set('_phpunit', $this);
 
-        $view->set('phpunitData_' . $type . '_exists', true);
+        $view->set('phpunitData_unit_exists', true);
 
         $dataXml = \simplexml_load_string($xml);
         $summaryAttributes = $dataXml->testsuite[0]->attributes();
@@ -192,26 +145,26 @@ class Phpunit implements ToolDashboardInterface
         );
 
         $nbSuccess = $nbTests - ($nbErrors + $nbFailures + $nbSkipped);
-        $view->set('phpunitData_' . $type . '_summary_is_success', $nbSuccess === $nbTests);
-        $view->set('phpunitData_' . $type . '_summary_tests_#', \number_format($nbTests));
-        $view->set('phpunitData_' . $type . '_summary_assertions_#', \number_format($nbAssertions));
-        $view->set('phpunitData_' . $type . '_summary_errors_#', \number_format($nbErrors));
-        $view->set('phpunitData_' . $type . '_summary_failures_#', \number_format($nbFailures));
-        $view->set('phpunitData_' . $type . '_summary_skipped_#', \number_format($nbSkipped));
-        $view->set('phpunitData_' . $type . '_summary_success_#', \number_format($nbSuccess));
+        $view->set('phpunitData_unit_summary_is_success', $nbSuccess === $nbTests);
+        $view->set('phpunitData_unit_summary_tests_#', \number_format($nbTests));
+        $view->set('phpunitData_unit_summary_assertions_#', \number_format($nbAssertions));
+        $view->set('phpunitData_unit_summary_errors_#', \number_format($nbErrors));
+        $view->set('phpunitData_unit_summary_failures_#', \number_format($nbFailures));
+        $view->set('phpunitData_unit_summary_skipped_#', \number_format($nbSkipped));
+        $view->set('phpunitData_unit_summary_success_#', \number_format($nbSuccess));
 
         $percentageError = 100 * \round($nbErrors / $nbTests, 4);
         $percentageFailure = 100 * \round($nbFailures / $nbTests, 4);
         $percentageSkipped = 100 * \round($nbSkipped / $nbTests, 4);
         $percentageSuccess = 100.0 - ($percentageError + $percentageFailure + $percentageSkipped);
 
-        $view->set('phpunitData_' . $type . '_summary_tests_#', \number_format($nbTests));
-        $view->set('phpunitData_' . $type . '_summary_errors_%', $percentageError);
-        $view->set('phpunitData_' . $type . '_summary_failures_%', $percentageFailure);
-        $view->set('phpunitData_' . $type . '_summary_skipped_%', $percentageSkipped);
-        $view->set('phpunitData_' . $type . '_summary_success_%', $percentageSuccess);
+        $view->set('phpunitData_unit_summary_tests_#', \number_format($nbTests));
+        $view->set('phpunitData_unit_summary_errors_%', $percentageError);
+        $view->set('phpunitData_unit_summary_failures_%', $percentageFailure);
+        $view->set('phpunitData_unit_summary_skipped_%', $percentageSkipped);
+        $view->set('phpunitData_unit_summary_success_%', $percentageSuccess);
 
-        $view->set('phpunitData_' . $type . '_summary_no_success_/', ($nbErrors + $nbFailures + $nbSkipped) / $nbTests);
+        $view->set('phpunitData_unit_summary_no_success_/', ($nbErrors + $nbFailures + $nbSkipped) / $nbTests);
 
         // Managed details.
         $aPhpunitDetailed = [];
@@ -238,7 +191,7 @@ class Phpunit implements ToolDashboardInterface
             return ($a['score'] > $b['score'] ? -1 : ($a['score'] < $b['score'] ? 1 : 0));
         });
 
-        $view->set('phpunitData_' . $type . '_details', $aPhpunitDetailed);
+        $view->set('phpunitData_unit_details', $aPhpunitDetailed);
 
         return $this;
     }
@@ -284,11 +237,10 @@ class Phpunit implements ToolDashboardInterface
     /**
      * Parses the code coverage file if readable to calculate the percentage of project covered.
      *
-     * @param string $type
      * @param string $coverageReportFile
      * @return Phpunit
      */
-    private function parseCoverage(string $type, string $coverageReportFile): Phpunit
+    private function parseCoverage(string $coverageReportFile): Phpunit
     {
         // Use xml report to get metrics information.
         if (!\is_readable($coverageReportFile) || '' === \trim($xml = \file_get_contents($coverageReportFile))) {
@@ -296,7 +248,7 @@ class Phpunit implements ToolDashboardInterface
         }
 
         $view = View::getInstance();
-        $view->set('phpunitData_coverage_' . $type . '_exists', true);
+        $view->set('phpunitData_coverage_unit_exists', true);
 
         $dataXml = \simplexml_load_string($xml);
         /** @var SimpleXMLElement $metricsTag */
@@ -304,15 +256,16 @@ class Phpunit implements ToolDashboardInterface
         $metricsAttributes = $metricsTag->attributes();
 
         if (0 === (int)$metricsAttributes->statements) {
-            $view->set('phpunitData_coverage_' . $type . '_exists', false);
+            $view->set('phpunitData_coverage_unit_exists', false);
             return $this;
         }
 
         $ratio = (int)$metricsAttributes->coveredstatements / (int)$metricsAttributes->statements;
-        $view->set('phpunitData_coverage_' . $type . '_global_%', 100 * \round($ratio, 4));
+        $view->set('phpunitData_coverage_unit_global_/', $ratio);
+        $view->set('phpunitData_coverage_unit_global_%', 100 * \round($ratio, 4));
 
         $badgeType = ['danger', 'warning', 'info', 'success'][($ratio >= .5) + ($ratio >= .75) + ($ratio >= .9)];
-        $view->set('phpunitData_coverage_' . $type . '_global_badge', $badgeType);
+        $view->set('phpunitData_coverage_unit_global_badge', $badgeType);
 
         return $this;
     }
@@ -346,92 +299,19 @@ class Phpunit implements ToolDashboardInterface
      */
     public function calculateSummary(): ?float
     {
-        // Overwritten by multiple summaries in self::setSummary().
-        return null;
-    }
-
-    /**
-     * Calculates the summary of the PHPUnit average, for a given type of unit test.
-     *
-     * @param string $type Type of the unit test.
-     * @return null|float The summary value calculated.
-     */
-    public function calculatePhpUnitSummary(string $type): ?float
-    {
         $view = View::getInstance();
-        if (!$view->get('phpunitData_' . $type . '_exists', false)) {
+        // If no unit tests: no summary available.
+        if (!$view->get('phpunitData_unit_exists', false)) {
+            return null;
+        }
+        // If no coverage: no summary available.
+        if (!$view->get('phpunitData_coverage_unit_exists', false)) {
             return null;
         }
 
-        return \max(0, 100 - 100 * $view->get('phpunitData_' . $type . '_summary_no_success_/'));
-    }
+        $phpunitSuccess = \max(0, 1 - $view->get('phpunitData_unit_summary_no_success_/'));
+        $phpunitCoverage = \min(1, $view->get('phpunitData_coverage_unit_global_/'));
 
-    /**
-     * Calculates the code coverage of the PHPUnit, for a given type of unit test.
-     *
-     * @param string $type Type of the unit test.
-     * @return null|float The code coverage in percentage.
-     */
-    public function calculatePhpUnitCoverageSummary(string $type): ?float
-    {
-        $view = View::getInstance();
-        if (!$view->get('phpunitData_coverage_' . $type . '_exists', false)) {
-            return null;
-        }
-
-        return $view->get('phpunitData_coverage_' . $type . '_global_%', 0);
-    }
-
-    /**
-     * Overwrite the setting of the Summary object to manage several summaries to add.
-     *
-     * @param Summary $summary
-     * @return $this
-     */
-    public function setSummary(Summary $summary)
-    {
-        $this->summary = $summary
-            ->addSummary(
-                new SummaryElement(
-                    static::LOG_FOLDER_NAME . '_unit',
-                    'Unit tests',
-                    $this->calculatePhpUnitSummary('unit'),
-                    6
-                )
-            )
-            ->addSummary(
-                new SummaryElement(
-                    static::LOG_FOLDER_NAME . '_unit_coverage',
-                    'Unit tests - Coverage',
-                    $this->calculatePhpUnitCoverageSummary('unit'),
-                    6
-                )
-            )
-            ->addSummary(
-                new SummaryElement(
-                    static::LOG_FOLDER_NAME . '_functional_orm',
-                    'Functional tests (ORM)',
-                    $this->calculatePhpUnitSummary('functional_orm'),
-                    0
-                )
-            )
-            ->addSummary(
-                new SummaryElement(
-                    static::LOG_FOLDER_NAME . '_functional_odm',
-                    'Functional tests (ODM)',
-                    $this->calculatePhpUnitSummary('functional_odm'),
-                    0
-                )
-            )
-            ->addSummary(
-                new SummaryElement(
-                    static::LOG_FOLDER_NAME . '_functional_couchdb',
-                    'Functional tests (CouchDB)',
-                    $this->calculatePhpUnitSummary('functional_couchdb'),
-                    0
-                )
-            );
-
-        return $this;
+        return 100 * \min(1, \max(0, $phpunitCoverage * $phpunitSuccess));
     }
 }
