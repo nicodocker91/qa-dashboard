@@ -28,8 +28,9 @@ $view = \Dashboard\Infrastructure\View::getInstance();
                             </div>
                             <?php endif; ?>
                             <div class="col-sm-6 odd">
-                                <?= $view->import('blocks/tools/phpmetrics/numberOfStructures.phtml'); ?>
-                                <?= $view->import('blocks/tools/phpcs/summary.phtml'); ?>
+                                <?= $view->import('blocks/tools/phpstan/summary.phtml'); ?>
+                                <?= ''//$view->import('blocks/tools/phpmetrics/numberOfStructures.phtml'); ?>
+                                <?= ''//$view->import('blocks/tools/phpcs/summary.phtml'); ?>
                             </div>
                             <div class="col-sm-6 even"><?= $view->import('blocks/tools/pdepend/summary-pyramid.phtml'); ?></div>
                         </div>

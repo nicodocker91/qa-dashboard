@@ -3,7 +3,7 @@ declare(strict_types = 1);
 $view = \Dashboard\Infrastructure\View::getInstance();
 ?>
 <div class="panel panel-primary hidden-sm hidden-xs">
-    <div class="panel-heading"><h4 class="panel-title">Commented lines of code / Logical lines of code</h4></div>
+    <div class="panel-heading"><h4 class="panel-title">Source code contents</h4></div>
     <div class="panel-body">
         <div class="progress">
             <div class="progress-bar progress-bar-info progress-bar-striped" style="width: <?= $view->get('phpMetricsData_cloc_%', 0)?>%">
@@ -13,10 +13,28 @@ $view = \Dashboard\Infrastructure\View::getInstance();
                 <span><?= $view->get('phpMetricsData_lloc_#', 0)?></span>
             </div>
         </div>
-        <p><b>Total: <?= $view->get('phpMetricsData_loc_#', 0); ?>.</b></p>
-        <p>
-            <span class="label label-info progress-bar-striped">&nbsp;</span>&nbsp;<em>Number of commented lines of code.</em><br>
-            <span class="label label-success progress-bar-striped">&nbsp;</span>&nbsp;<em>Number of logical lines of code.</em>
-        </p>
+        <div class="row">
+            <div class="col-sm-6">
+                <p><b>Total: <?= $view->get('phpMetricsData_loc_#', 0); ?>.</b></p>
+                <p>
+                    <span class="label label-info progress-bar-striped">&nbsp;</span>&nbsp;<em>Number of commented lines of code.</em><br>
+                    <span class="label label-success progress-bar-striped">&nbsp;</span>&nbsp;<em>Number of logical lines of code.</em>
+                </p>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <hr style="margin: 10px 16px 10px 0">
+                    <div class="col-sm-4">
+                        <p class="text-center"><span class="lead"><?= $view->get('phpMetricsData_nbMethods_#', 'N/A');?></span><br>Methods</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="text-center"><span class="lead"><?= $view->get('phpMetricsData_nbClasses_#', 'N/A');?></span><br>Classes</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="text-center"><span class="lead"><?= $view->get('phpMetricsData_nbInterfaces_#', 'N/A');?></span><br>Interfaces</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

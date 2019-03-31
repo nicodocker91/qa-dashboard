@@ -1,0 +1,73 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+$summaryErrorNumber = $view->get('phpstan_nbErrors_byLevel_#', []);
+$summaryErrorPercent = $view->get('phpstan_nbErrors_byLevel_%', []);
+$summaryColors = $view->get('phpstan_colors_summary', []);
+$errors = $view->get('phpstan_errors_byLevel', []);
+?>
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">PHP Stan - Statistics</h4>
+        </div>
+        <div class="panel-body">
+        <?php if ($view->get('phpstanData_hasErrors')): ?>
+            <div class="row">
+                <div class="col-sm-12 text-center"><p><strong>Number of errors by level</strong></p></div>
+            </div>
+            <div class="progress">
+            <?php for ($level=0, $nb=\count($summaryErrorNumber); $level<$nb; ++$level): ?>
+                <div class="progress-bar"
+                     style="background-color: <?= $summaryColors[$level] ?>;width: <?= $summaryErrorPercent[$level] ?>%"
+                     data-toggle="tooltip"
+                     data-placement="bottom"
+                     title="Level <?= $level ?>"
+                >
+                    <span><?= $summaryErrorNumber[$level] ?></span>
+                </div>
+            <?php endfor; ?>
+            </div>
+            <div class="row text-center">
+                <?php for ($level=0, $nb=\count($summaryErrorNumber); $level<$nb; ++$level): ?>
+                <div class="col-sm-3" style="width: <?= round(100/$nb, 2); ?>%">
+                    <span class="label" style="background-color: <?= $summaryColors[$level] ?>">&nbsp;</span>&nbsp;
+                    <em>Level <?= $level ?></em>
+                </div>
+            <?php endfor; ?>
+            </div>
+        <?php else: ?>
+            <div class="col-sm-12 text-center">
+                <span class="label label-success">&nbsp;</span>&nbsp;No error.
+            </div>
+        <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php if ($view->get('phpstanData_hasErrors')): ?>
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">PHP Stan</h4>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Level</th>
+                                <th>Line</th>
+                                <th>File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($errors as $error): ?>
+
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
