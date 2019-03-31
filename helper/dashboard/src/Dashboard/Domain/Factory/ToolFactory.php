@@ -5,7 +5,7 @@ namespace Dashboard\Domain\Factory;
 
 use Dashboard\Domain\Generalisation\ToolDashboardInterface;
 use Dashboard\Domain\Tool\{
-    Behat, Gatling, Newman, Pdepend, PhpCodeSniffer, PhpCpd, PhpMetrics, PhpStorm, Phpunit, Sonar, Uml
+    Behat, Gatling, Newman, Pdepend, PhpCodeSniffer, PhpCpd, PhpMetrics, PhpStan, PhpStorm, Phpunit, Sonar, Uml
 };
 use Dashboard\Infrastructure\Exception\ToolException;
 
@@ -26,6 +26,7 @@ class ToolFactory
         PhpCodeSniffer::LOG_FOLDER_NAME => PhpCodeSniffer::class,
         PhpCpd::LOG_FOLDER_NAME => PhpCpd::class,
         PhpMetrics::LOG_FOLDER_NAME => PhpMetrics::class,
+        PhpStan::LOG_FOLDER_NAME => PhpStan::class,
         PhpStorm::LOG_FOLDER_NAME => PhpStorm::class,
         Phpunit::LOG_FOLDER_NAME => Phpunit::class,
         Sonar::LOG_FOLDER_NAME => Sonar::class,

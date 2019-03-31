@@ -1,0 +1,11 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+?>
+<a href="#phpstan" data-toggle="tab">
+    <i class="far fa-chart-bar" style="transform: scaleX(-1) rotate(270deg)"></i> PHPStan
+    <div class="pull-right">
+        <?php if ($view->get('phpstanData_hasErrors')): ?><span class="label label-danger"><?= $view->get('phpstan_nbErrors_#') ?></span><?php endif;?>
+        <?php if (!$view->get('phpstanData_hasErrors')): ?><span class="label label-success">OK</span><?php endif;?>
+    </div>
+</a>

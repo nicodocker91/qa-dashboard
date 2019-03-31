@@ -1,0 +1,95 @@
+<?php
+declare(strict_types = 1);
+$view = \Dashboard\Infrastructure\View::getInstance();
+$summaryErrorNumber = $view->get('phpstan_nbErrors_byLevel_#', []);
+$summaryErrorPercent = $view->get('phpstan_nbErrors_byLevel_%', []);
+$summaryColors = $view->get('phpstan_colors_summary', []);
+$errors = $view->get('phpstan_errors_byFile', []);
+?>
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">PHP Stan - Statistics</h4>
+        </div>
+        <div class="panel-body">
+        <?php if ($view->get('phpstanData_hasErrors')): ?>
+            <div class="row">
+                <div class="col-sm-12 text-center"><p><strong>Number of errors by level</strong></p></div>
+            </div>
+            <div class="progress">
+            <?php for ($level=0, $nb=\count($summaryErrorNumber); $level<$nb; ++$level): ?>
+                <div class="progress-bar"
+                     style="background-color: <?= $summaryColors[$level] ?>;width: <?= $summaryErrorPercent[$level] ?>%"
+                     data-toggle="tooltip"
+                     data-placement="bottom"
+                     title="Level <?= $level ?>"
+                >
+                    <span><?= $summaryErrorNumber[$level] ?></span>
+                </div>
+            <?php endfor; ?>
+            </div>
+            <div class="row text-center">
+                <?php for ($level=0, $nb=\count($summaryErrorNumber); $level<$nb; ++$level): ?>
+                <div class="col-sm-3" style="width: <?= round(100/$nb, 2); ?>%">
+                    <span class="label" style="background-color: <?= $summaryColors[$level] ?>">&nbsp;</span>&nbsp;
+                    <em>Level <?= $level ?></em>
+                </div>
+            <?php endfor; ?>
+            </div>
+        <?php else: ?>
+            <div class="col-sm-12 text-center">
+                <span class="label label-success">&nbsp;</span>&nbsp;No error.
+            </div>
+        <?php endif; ?>
+        </div>
+    </div>
+</div>
+<?php if ($view->get('phpstanData_hasErrors')): ?>
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">PHP Stan</h4>
+            </div>
+            <div class="panel-body">
+                <div class="panel-group" id="accordion_phpstan" role="tablist" aria-multiselectable="true">
+                <?php foreach ($errors as $fileName => $error): ?>
+                <?php $htmlPhpStanFileId = sha1($fileName); ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="phpstan_file_<?= $htmlPhpStanFileId ?>_heading">
+                            <h4 class="panel-title">
+                                <a role="button"
+                                   data-toggle="collapse"
+                                   data-parent="#accordion_phpstan"
+                                   data-target="#phpstan_file_<?= $htmlPhpStanFileId ?>_body"
+                                   href="#phpstan_file_<?= $htmlPhpStanFileId ?>_heading"
+                                   aria-expanded="false"
+                                   aria-controls="phpstan_file_<?= $htmlPhpStanFileId ?>_body">
+                                    <?= $fileName ?>
+                                    <div class="pull-right">
+                                        <span class="label label-danger"><?= \count($error) ?></span>
+                                    </div>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="phpstan_file_<?= $htmlPhpStanFileId ?>_body"
+                             class="panel-collapse collapse"
+                             role="tabpanel"
+                             aria-labelledby="phpstan_file_<?= $htmlPhpStanFileId ?>_heading">
+                            <div class="panel-body">
+                                <?php foreach ($error as $errorInfo): ?>
+                                    <div class="bs-callout"
+                                         style="border-left-color: <?= $summaryColors[$errorInfo->level] ?>"
+                                         title="Level <?= $errorInfo->level ?>"
+                                    >
+                                        <p><strong>Line <?= $errorInfo->line ?></strong>: <?= $errorInfo->message ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
