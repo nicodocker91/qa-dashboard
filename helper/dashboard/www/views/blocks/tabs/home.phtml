@@ -27,12 +27,14 @@ $view = \Dashboard\Infrastructure\View::getInstance();
                                  <?= $view->import('blocks/tools/newman/summary.phtml'); ?>
                             </div>
                             <?php endif; ?>
+                            <?php if ($view->get('phpstanData', false)): ?>
                             <div class="col-sm-6 odd">
                                 <?= $view->import('blocks/tools/phpstan/summary.phtml'); ?>
-                                <?= ''//$view->import('blocks/tools/phpmetrics/numberOfStructures.phtml'); ?>
-                                <?= ''//$view->import('blocks/tools/phpcs/summary.phtml'); ?>
                             </div>
-                            <div class="col-sm-6 even"><?= $view->import('blocks/tools/pdepend/summary-pyramid.phtml'); ?></div>
+                            <?php endif; ?>
+                            <div class="col-sm-<?= $view->get('phpstanData', false) ? 6 : 12 ?> <?= $view->get('phpstanData', false) ? 'even' : 'full' ?>">
+                                <?= $view->import('blocks/tools/pdepend/summary-pyramid.phtml'); ?>
+                            </div>
                         </div>
                         <div class="row"><?= $view->import('blocks/tools/phpmetrics/locStatistics.phtml'); ?></div>
                     </div>

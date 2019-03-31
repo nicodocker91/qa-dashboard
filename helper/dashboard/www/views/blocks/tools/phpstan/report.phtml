@@ -4,7 +4,7 @@ $view = \Dashboard\Infrastructure\View::getInstance();
 $summaryErrorNumber = $view->get('phpstan_nbErrors_byLevel_#', []);
 $summaryErrorPercent = $view->get('phpstan_nbErrors_byLevel_%', []);
 $summaryColors = $view->get('phpstan_colors_summary', []);
-$errors = $view->get('phpstan_errors_byLevel', []);
+$errors = $view->get('phpstan_errors_byFile', []);
 ?>
 <div class="row">
     <div class="panel panel-primary">
@@ -51,21 +51,43 @@ $errors = $view->get('phpstan_errors_byLevel', []);
                 <h4 class="panel-title">PHP Stan</h4>
             </div>
             <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-condensed">
-                        <thead>
-                            <tr>
-                                <th>Level</th>
-                                <th>Line</th>
-                                <th>File</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($errors as $error): ?>
-
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                <div class="panel-group" id="accordion_phpstan" role="tablist" aria-multiselectable="true">
+                <?php foreach ($errors as $fileName => $error): ?>
+                <?php $htmlPhpStanFileId = sha1($fileName); ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="phpstan_file_<?= $htmlPhpStanFileId ?>_heading">
+                            <h4 class="panel-title">
+                                <a role="button"
+                                   data-toggle="collapse"
+                                   data-parent="#accordion_phpstan"
+                                   data-target="#phpstan_file_<?= $htmlPhpStanFileId ?>_body"
+                                   href="#phpstan_file_<?= $htmlPhpStanFileId ?>_heading"
+                                   aria-expanded="false"
+                                   aria-controls="phpstan_file_<?= $htmlPhpStanFileId ?>_body">
+                                    <?= $fileName ?>
+                                    <div class="pull-right">
+                                        <span class="label label-danger"><?= \count($error) ?></span>
+                                    </div>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="phpstan_file_<?= $htmlPhpStanFileId ?>_body"
+                             class="panel-collapse collapse"
+                             role="tabpanel"
+                             aria-labelledby="phpstan_file_<?= $htmlPhpStanFileId ?>_heading">
+                            <div class="panel-body">
+                                <?php foreach ($error as $errorInfo): ?>
+                                    <div class="bs-callout"
+                                         style="border-left-color: <?= $summaryColors[$errorInfo->level] ?>"
+                                         title="Level <?= $errorInfo->level ?>"
+                                    >
+                                        <p><strong>Line <?= $errorInfo->line ?></strong>: <?= $errorInfo->message ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
                 </div>
             </div>
         </div>

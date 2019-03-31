@@ -56,7 +56,9 @@ class PhpStan implements ToolDashboardInterface
         foreach ($dataJson as $level => $dataLevel) {
             $nbErrorsByLevels[$level] =
                 $dataLevel['totals']['file_errors'] - ($dataJson[$level-1]['totals']['file_errors'] ?? 0);
-            $percentErrorsByLevels[$level] = number_format(100 * $nbErrorsByLevels[$level] / $nbErrors, 2);
+            $percentErrorsByLevels[$level] = (
+                0 === $nbErrors ? 0 : number_format(100 * $nbErrorsByLevels[$level] / $nbErrors, 2)
+            );
             foreach ($dataLevel['files'] as $fileName => $fileError) {
                 $relFileName = preg_replace('#^/app/#', '', $fileName);
                 foreach ($fileError['messages'] as $message) {
@@ -74,14 +76,20 @@ class PhpStan implements ToolDashboardInterface
             }
         }
 
-        // TODO: Group errors by files and sort by lines.
-        // TODO: Use an accordion for each file and a table for all messages by file including the level, the line and the message.
-        // TODO: Add the number of messages for each files on a right label-danger (use count of message to get it).
+        $errorsByFile = [];
+        foreach ($errorsByLevel as $error) {
+            $errorsByFile[$error->file] = $errorsByFile[$error->file] ?? [];
+            $errorsByFile[$error->file][] = $error;
+        }
+        uasort($errorsByFile, static function ($a, $b): int {
+            return \count($a) <=> \count($b);
+        });
 
         $view->set('phpstan_nbErrors_#', number_format($nbErrors));
         $view->set('phpstan_nbErrors_byLevel_#', \array_map('\\number_format', $nbErrorsByLevels));
         $view->set('phpstan_nbErrors_byLevel_%', $percentErrorsByLevels);
         $view->set('phpstan_errors_byLevel', \array_values($errorsByLevel));
+        $view->set('phpstan_errors_byFile', $errorsByFile);
 
         $view->set('phpstanData_hasErrors', 0 !== $nbErrors);
 
