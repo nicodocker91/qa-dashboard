@@ -78,12 +78,10 @@ class PhpStan implements ToolDashboardInterface
 
         $errorsByFile = [];
         foreach ($errorsByLevel as $error) {
-            $errorsByFile[$error->file] = $errorsByFile[$error->file] ?? [];
-            $errorsByFile[$error->file][] = $error;
+            $errorsByFile[$error->level][$error->file] = $errorsByFile[$error->level][$error->file] ?? [];
+            $errorsByFile[$error->level][$error->file][] = $error;
         }
-        uasort($errorsByFile, static function ($a, $b): int {
-            return \count($a) <=> \count($b);
-        });
+        ksort($errorsByFile, SORT_NATURAL);
 
         $view->set('phpstan_nbErrors_#', number_format($nbErrors));
         $view->set('phpstan_nbErrors_byLevel_#', \array_map('\\number_format', $nbErrorsByLevels));
