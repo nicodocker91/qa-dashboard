@@ -52,36 +52,48 @@ $errors = $view->get('phpstan_errors_byFile', []);
             </div>
             <div class="panel-body">
                 <div class="panel-group" id="accordion_phpstan" role="tablist" aria-multiselectable="true">
-                <?php foreach ($errors as $fileName => $error): ?>
-                <?php $htmlPhpStanFileId = sha1($fileName); ?>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="phpstan_file_<?= $htmlPhpStanFileId ?>_heading">
+                <?php foreach ($errors as $levelIndex => $levelError): ?>
+                <?php $htmlPhpStanLevelId = sha1('PHPStan - Level ' . $levelIndex); ?>
+                    <div class="panel panel-default" style="border-left-width: 6px; border-left-color: <?= $summaryColors[$levelIndex] ?>">
+                        <div class="panel-heading" role="tab" id="phpstan_level_<?= $htmlPhpStanLevelId ?>_heading">
                             <h4 class="panel-title">
                                 <a role="button"
                                    data-toggle="collapse"
                                    data-parent="#accordion_phpstan"
-                                   data-target="#phpstan_file_<?= $htmlPhpStanFileId ?>_body"
-                                   href="#phpstan_file_<?= $htmlPhpStanFileId ?>_heading"
+                                   data-target="#phpstan_level_<?= $htmlPhpStanLevelId ?>_body"
+                                   href="#phpstan_level_<?= $htmlPhpStanLevelId ?>_heading"
                                    aria-expanded="false"
-                                   aria-controls="phpstan_file_<?= $htmlPhpStanFileId ?>_body">
-                                    <?= $fileName ?>
+                                   aria-controls="phpstan_level_<?= $htmlPhpStanLevelId ?>_body">
+                                    Level <?= $levelIndex ?>
                                     <div class="pull-right">
-                                        <span class="label label-danger"><?= \count($error) ?></span>
+                                        <span class="label label-danger"><?= \count($levelError) ?></span>
                                     </div>
                                 </a>
                             </h4>
                         </div>
-                        <div id="phpstan_file_<?= $htmlPhpStanFileId ?>_body"
+                        <div id="phpstan_level_<?= $htmlPhpStanLevelId ?>_body"
                              class="panel-collapse collapse"
                              role="tabpanel"
-                             aria-labelledby="phpstan_file_<?= $htmlPhpStanFileId ?>_heading">
+                             aria-labelledby="phpstan_level_<?= $htmlPhpStanLevelId ?>_heading">
                             <div class="panel-body">
-                                <?php foreach ($error as $errorInfo): ?>
-                                    <div class="bs-callout"
-                                         style="border-left-color: <?= $summaryColors[$errorInfo->level] ?>"
-                                         title="Level <?= $errorInfo->level ?>"
-                                    >
-                                        <p><strong>Line <?= $errorInfo->line ?></strong>: <?= $errorInfo->message ?>
+                                <?php foreach ($levelError as $fileName => $fileError): ?>
+                                    <div class="table-responsive">
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>Line</th>
+                                                    <th><?= $fileName ?></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php foreach ($fileError as $error): ?>
+                                                <tr>
+                                                    <td><?= $error->line ?></td>
+                                                    <td><?= $error->message ?></td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 <?php endforeach; ?>
                             </div>

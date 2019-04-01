@@ -15,7 +15,7 @@ $summaryColors = $view->get('phpstan_colors_summary', []);
         </div>
         <div class="row">
             <div class="col-sm-12" id="phpstanGraph_summary">
-                <?php for ($level=\count($summaryErrorNumber)-1; $level>=0; --$level): ?>
+                <?php for ($level=0, $nb=\count($summaryErrorNumber); $level<$nb; ++$level): ?>
                 <div class="row">
                     <div class="col-sm-2" style="text-align: right"><strong>Level <?= $level ?></strong></div>
                     <div class="col-sm-10">
