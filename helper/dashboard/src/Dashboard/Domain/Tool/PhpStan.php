@@ -69,7 +69,7 @@ class PhpStan implements ToolDashboardInterface
                     $errorsByLevel[$hashError] = (object)[
                         'level' => number_format($level),
                         'file' => $relFileName,
-                        'line' => number_format($message['line']),
+                        'line' => (null !== $message['line']) ? number_format($message['line']) : '',
                         'message' => $message['message']
                     ];
                 }
